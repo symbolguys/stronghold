@@ -1,0 +1,68 @@
+version: '3.5'
+services:
+  portainer:
+    image: portainer/portainer:latest
+    container_name: portainer
+    restart: unless-stopped
+    ports:
+      - 9001:9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - stronghold
+  
+  postgres:
+    profiles:
+      - donotstart
+    image: postgres:latest
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: sa
+      POSTGRES_PASSWORD: Password111
+      PGDATA: /data/postgres
+    volumes:
+      - postgres-data:/data/postgres
+    ports:
+      - 5432:5432
+
+# This is an example of microservice using nginx Dockerfile
+  microfrontend-example:
+    profiles:
+      - donotstart
+    container_name: microfrontend-example
+    build:
+      context: ../frotend/apps/stronghold
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - 80:80
+    networks:
+      - stronghold
+    depends_on:
+      - postgres
+
+# This is an example of springboot service: https://www.appsdeveloperblog.com/spring-boot-microservices-deployment-with-docker-compose/
+  springboot-example:
+    profiles:
+      - donotstart
+    container_name: springboot-example
+    image: myapplication
+    build: .
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/mydb
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=Password111
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create
+
+volumes:
+  postgres-data:
+    driver: local
+
+networks:
+  stronghold:
