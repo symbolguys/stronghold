@@ -1,0 +1,116 @@
+{
+  "name": "jazerant",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/jazerant/src",
+  "prefix": "frontend",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:webpack-browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/jazerant",
+        "index": "apps/jazerant/src/index.html",
+        "main": "apps/jazerant/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/jazerant/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": ["apps/jazerant/src/favicon.ico", "apps/jazerant/src/assets"],
+        "styles": ["apps/jazerant/src/styles.scss"],
+        "scripts": [],
+        "customWebpackConfig": {
+          "path": "apps/jazerant/webpack.config.js"
+        }
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all",
+          "customWebpackConfig": {
+            "path": "apps/jazerant/webpack.prod.config.js"
+          }
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@nrwl/angular:webpack-dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "jazerant:build:production"
+        },
+        "development": {
+          "browserTarget": "jazerant:build:development"
+        }
+      },
+      "defaultConfiguration": "development",
+      "options": {
+        "port": 4201,
+        "publicHost": "http://localhost:4201"
+      }
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "jazerant:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/jazerant/**/*.ts", "apps/jazerant/**/*.html"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/jazerant/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "serve-static": {
+      "executor": "@nrwl/angular:file-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "jazerant:build",
+        "port": 4201
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "jazerant:build:development"
+        },
+        "production": {
+          "buildTarget": "jazerant:build:production"
+        }
+      }
+    }
+  },
+  "tags": []
+}
