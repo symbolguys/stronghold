@@ -1,13 +1,12 @@
 package com.symbolguys.stronghold.vista;
 
-import java.util.List;
-
 import lombok.Builder;
 import lombok.Data;
 
-@Builder
 @Data
-public class Team {
+@Builder
+public class Enemy {
+    private String id;
     private String name;
-    private List<Character> characters;
+    private String state;
 }
