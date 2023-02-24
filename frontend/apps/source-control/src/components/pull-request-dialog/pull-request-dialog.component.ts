@@ -22,4 +22,33 @@ export class PullRequestDialogComponent implements OnInit {
   ngOnInit() {
     this.data = this.config.data;
   }
+
+  getUpdatedClosedString() {
+    if (this.data?.state === 'OPEN') {
+      return `Last Updated: ${this.data.updateDate}`;
+    } else {
+      return `Closed: ${this.data?.closedDate}`;
+    }
+  }
+
+  getAliveTime(): string {
+    if (this.data?.state === 'OPEN') {
+      return this.dhmFormat(Date.now() - this.data.createDate.getTime());
+    } else if (this.data) {
+      return this.dhmFormat(
+        this.data.closedDate.getTime() - this.data.createDate.getTime()
+      );
+    }
+
+    return NaN.toString();
+  }
+
+  dhmFormat(ms: number) {
+    const days = Math.floor(ms / (24 * 60 * 60 * 1000));
+    const daysms = ms % (24 * 60 * 60 * 1000);
+    const hours = Math.floor(daysms / (60 * 60 * 1000));
+    const hoursms = ms % (60 * 60 * 1000);
+    const minutes = Math.floor(hoursms / (60 * 1000));
+    return `${days} days, ${hours} hours, ${minutes} minutes`;
+  }
 }

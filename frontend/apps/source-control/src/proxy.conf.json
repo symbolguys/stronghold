@@ -1,0 +1,6 @@
+{
+    "/pullRequests": {
+      "target": "http://sourcecontrol:8085",
+      "secure": false
+    }
+}
