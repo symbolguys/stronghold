@@ -8,7 +8,8 @@ using UnityEngine.Networking;
 public class ConfigurationLoader : MonoBehaviour
 {
     [SerializeField] private GameObject characterPrefab;
-    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private GameObject orcPrefab;
+    [SerializeField] private GameObject beholderPrefab;
     [SerializeField] private Transform characterContainer;
     [SerializeField] private Transform enemyContainer;
     [SerializeField] private string configEndpoint;
@@ -46,33 +47,39 @@ public class ConfigurationLoader : MonoBehaviour
 
         foreach (Battle battle in configurationData.battles)
         {
-            SpawnCharacter(battle);
-            List<State> enemyStates = new List<State>();
+            GameObject character = SpawnCharacter(battle);
+            List<GameObject> enemies = new List<GameObject>();
             foreach (Enemy enemy in battle.enemies)
             {
-                enemyStates.Add(SpawnEnemy(enemy));
+                enemies.Add(SpawnEnemy(enemy));
             }
-            SetEnemyPositions(enemyStates, battle.position);
+            SetEnemyPositions(enemies, battle.position, character);
         }
     }
 
-    private void SetEnemyPositions(List<State> enemyStates, Position position)
+    private void SetEnemyPositions(List<GameObject> enemyStates, Position position, GameObject character)
     {
         if (enemyStates.Count == 1)
         {
-            enemyStates[0].UpdatePosition(new Vector3(position.x, position.y, position.z + 2));
-            enemyStates[0].UpdateDirection(180f);
+            enemyStates[0].GetComponent<State>().UpdatePosition(new Vector3(position.x, position.y, position.z + 2.5f));
+            enemyStates[0].GetComponent<State>().UpdateDirection(180f);
         }
-        //else
-        //{
-        //    for (int i = 0; i < enemyStates.Count; i++)
-        //    {
-        //        enemyStates[i].UpdatePosition
-        //    }
-        //}
+        else
+        {
+            float angleStep = 360f / enemyStates.Count;
+
+            for (int i = 0; i < enemyStates.Count; i++)
+            {
+                float angle = i * angleStep;
+                Vector3 newPosition = character.transform.position + Quaternion.Euler(0f, angle, 0f) * Vector3.forward * 2.5f;
+                enemyStates[i].transform.position = newPosition;
+                enemyStates[i].transform.LookAt(character.transform.position);
+                character.GetComponent<State>().SetAnimationController("SPIN");
+            }
+        }
     }
 
-    private void SpawnCharacter(Battle battle)
+    private GameObject SpawnCharacter(Battle battle)
     {
         GameObject characterObject = Instantiate(characterPrefab, characterContainer);
         State state = characterObject.GetComponent<State>();
@@ -82,18 +89,31 @@ public class ConfigurationLoader : MonoBehaviour
         GameObject name = nameTransform.gameObject;
         TextMeshPro text = name.GetComponent<TextMeshPro>();
         text.SetText(battle.character.name);
+        return characterObject;
     }
 
-    private State SpawnEnemy(Enemy enemy)
+    private GameObject SpawnEnemy(Enemy enemy)
     {
+        GameObject enemyPrefab;
+        if(enemy.type == "ORC")
+        {
+            enemyPrefab = orcPrefab;
+        } else if(enemy.type == "BEHOLDER")
+        {
+            enemyPrefab = beholderPrefab;
+        } else
+        {
+            enemyPrefab = orcPrefab;
+        }
+
         GameObject enemyObject = Instantiate(enemyPrefab, enemyContainer);
         State state = enemyObject.GetComponent<State>();
-        state.SetAnimationController(enemy.state);
+        state.SetAnimationController(enemy.type == "BEHOLDER" ? "TAUNTING" : enemy.state);
         Transform nameTransform = enemyObject.transform.Find("Name");
         GameObject name = nameTransform.gameObject;
         TextMeshPro text = name.GetComponent<TextMeshPro>();
         text.SetText(enemy.name);
-        return state;
+        return enemyObject;
     }
 }
 
@@ -126,6 +146,7 @@ public class Enemy
     public string id;
     public string name;
     public string state;
+    public string type;
 }
 
 [System.Serializable]
@@ -139,7 +160,7 @@ public class Character
 [System.Serializable]
 public class Position
 {
-    public int x;
-    public int y;
-    public int z;
+    public float x;
+    public float y;
+    public float z;
 }

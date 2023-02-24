@@ -1,7 +1,7 @@
 <p-table [value]="manors" dataKey="name" [tableStyle]="{'min-width': '60rem'}">
     <ng-template pTemplate="header">
         <tr>
-            <th style="width: 5rem"></th>
+            <th style="width: 5rem">Manors </th>
             <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
             <th style="width: 5rem"></th>
             <th style="width: 5rem"></th>
@@ -17,7 +17,7 @@
                 <button (click)="showAddManor(manor)" pButton type="button" label="Add" icon="pi pi-plus" class="p-button-rounded p-button-plain default-button"></button>
             </td>
             <td>
-                <button pButton type="button" label="Delete" icon="pi pi-trash" class="p-button-rounded p-button-plain default-button"></button>
+                <button (click)="showDeleteManor(manor)" pButton type="button" label="Delete" icon="pi pi-trash" class="p-button-rounded p-button-plain default-button"></button>
             </td>
         </tr>
     </ng-template>
@@ -28,7 +28,7 @@
                     <p-table [value]="manor.households" dataKey="id">
                         <ng-template let-household pTemplate="header">
                             <tr>
-                                <th style="width: 5rem"></th>
+                                <th style="width: 5rem">Households </th>
                                 <th pSortableColumn="id">Name <p-sortIcon field="name"></p-sortIcon></th>
                                 <th style="width: 5rem"></th>
                                 <th style="width: 5rem"></th>
@@ -37,7 +37,7 @@
                         <ng-template pTemplate="body" let-household let-expanded="expanded">
                             <tr>
                                 <td>
-                                    <button type="button" pButton pRipple [pRowToggler]="households" class="p-button-text p-button-rounded p-button-plain default-button"></button>
+                                    <button type="button" pButton pRipple [pRowToggler]="household" class="p-button-text p-button-rounded p-button-plain default-button"></button>
                                 </td>
                                 <td>{{household.name}}</td>
                                 <td>
@@ -55,13 +55,14 @@
                                         <p-table [value]="household.members" dataKey="id">
                                             <ng-template pTemplate="header">
                                                 <tr>
-                                                    <th style="width: 5rem"></th>
+                                                    <th style="width: 5rem">Members </th>
                                                     <th pSortableColumn="id">Name <p-sortIcon field="name"></p-sortIcon></th>
-                                                    <th style="width: 5rem"></th>
+                                                    <th style="width: 5rem"> </th>
                                                 </tr>
                                             </ng-template>
                                             <ng-template pTemplate="body" let-member let-expanded="expanded">
                                                 <tr>
+                                                    <td></td>
                                                     <td>{{member.name}}</td>
                                                     <td>
                                                         <button (click)="showAddMember(manor, household)" pButton type="button" label="Add" icon="pi pi-plus" class="p-button-rounded p-button-plain default-button"></button>
@@ -70,12 +71,11 @@
                                             </ng-template>
                                             <ng-template pTemplate="emptymessage">
                                                 <tr>
-                                                    <td>
-                                                        <button (click)="showAddMember(manor, household)" pButton type="button" label="Add" icon="pi pi-plus" class="p-button-rounded p-button-plain default-button"></button>
-                                                    </td>
+                                                    <button (click)="showAddMember(manor, household)" pButton type="button" label="Add" icon="pi pi-plus" class="p-button-rounded p-button-plain default-button"></button>
                                                 </tr>
                                             </ng-template>
                                         </p-table>
+                                        <br>
                                     </div>
                                 </td>
                             </tr>
@@ -115,7 +115,7 @@
     </ng-template>
 </p-dialog>
 
-<p-dialog header="Add Member" [(visible)]="displayAddHousehold" [style]="{width: '50vw'}">
+<p-dialog header="Add Member" [(visible)]="displayAddMember" [style]="{width: '50vw'}">
     <h5>Name</h5>
     <input type="text" pInputText [(ngModel)]="membername"> 
     <h5>Initials</h5>
