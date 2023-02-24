@@ -1,9 +1,12 @@
 package com.hackathon.orgroup.jiraIssues.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hackathon.orgroup.jiraIssues.models.JiraIssue;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 
+import java.io.IOException;
 import java.net.*;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -30,7 +33,7 @@ public class JiraIssueService {
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return new ObjectMapper().readValue(response.body(), JiraIssue.class);
+        return response.body();
     }
 }
 

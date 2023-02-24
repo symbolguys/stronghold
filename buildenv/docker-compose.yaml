@@ -66,7 +66,19 @@ services:
     depends_on:
       - portainer
       - manor
-
+      
+  vista-admin:
+    container_name: vista-admin
+    build:
+      context: ../frontend
+      dockerfile: apps/vista-admin/Dockerfile
+    restart: unless-stopped
+    ports:
+      - 8091:80
+    networks:
+      - stronghold
+    depends_on:
+      - manor
   manor:
     image: mringive/symbolguys-stronghold-manor:latest
     container_name: manor
