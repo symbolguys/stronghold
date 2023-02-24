@@ -20,6 +20,7 @@ services:
       POSTGRES_USER: sa
       POSTGRES_PASSWORD: Password111
       PGDATA: /data/postgres
+      POSTGRES_DB: mydatabase
     volumes:
       - postgres-data:/data/postgres
     ports:
@@ -54,10 +55,13 @@ services:
     depends_on:
       - postgres
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/mydb
-      - SPRING_DATASOURCE_USERNAME=sa
-      - SPRING_DATASOURCE_PASSWORD=Password111
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=create
+      - 'spring.r2dbc.url=r2dbc:postgresql://postgres:5432/mydatabase'
+      - 'spring.r2dbc.username=sa'
+      - 'spring.r2dbc.password=Password111'
+      - 'spring.r2dbc.pool.max-size=10'
+      - 'spring.jpa.hibernate.ddl-auto=create'
+      - 'spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true'
+      - 'spring.jpa.properties.hibernate.dialect= org.hibernate.dialect.PostgreSQLDialect'
 
   vista:
     image: mringive/symbolguys-stronghold-vista:latest

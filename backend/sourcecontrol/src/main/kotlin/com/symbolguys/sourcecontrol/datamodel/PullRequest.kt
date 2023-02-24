@@ -1,11 +1,8 @@
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.Id
+import org.springframework.data.annotation.Id
 import java.util.*
 
-@Entity
 data class PullRequest(
-  @Id @GeneratedValue
+  @Id
   val id: UUID? = UUID.randomUUID(),
   val state: String,
   val title: String,
