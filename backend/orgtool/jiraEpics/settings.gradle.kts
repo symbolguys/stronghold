@@ -1,1 +1,1 @@
-rootProject.name = "jiraEpics"
+rootProject.name = "JiraEpics"
