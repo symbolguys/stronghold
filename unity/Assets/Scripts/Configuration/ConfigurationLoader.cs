@@ -10,6 +10,10 @@ public class ConfigurationLoader : MonoBehaviour
     [SerializeField] private GameObject characterPrefab;
     [SerializeField] private GameObject orcPrefab;
     [SerializeField] private GameObject beholderPrefab;
+    [SerializeField] private GameObject blacksmith;
+    [SerializeField] private GameObject outerSmallRedHouse;
+    [SerializeField] private GameObject innerOrangeHouse;
+    [SerializeField] private GameObject field;
     [SerializeField] private Transform characterContainer;
     [SerializeField] private Transform enemyContainer;
     [SerializeField] private string configEndpoint;
@@ -47,7 +51,7 @@ public class ConfigurationLoader : MonoBehaviour
 
         foreach (Battle battle in configurationData.battles)
         {
-            GameObject character = SpawnCharacter(battle);
+            GameObject character = SpawnCharacterInBattle(battle);
             List<GameObject> enemies = new List<GameObject>();
             foreach (Enemy enemy in battle.enemies)
             {
@@ -55,6 +59,44 @@ public class ConfigurationLoader : MonoBehaviour
             }
             SetEnemyPositions(enemies, battle.position, character);
         }
+
+        foreach (Project project in configurationData.projects)
+        {
+            foreach (Character character in project.characters)
+            {
+                switch (project.type)
+                {
+                    case "blacksmith":
+                        SpawnCharacterOnProject(project, character, blacksmith);
+                        break;
+                    case "outerSmallRedHouse":
+                        SpawnCharacterOnProject(project, character, outerSmallRedHouse);
+                        break;
+                    case "innerOrangeHouse":
+                        SpawnCharacterOnProject(project, character, innerOrangeHouse);
+                        break;
+                    case "field":
+                        SpawnCharacterOnProject(project, character, field);
+                        break;
+
+                }
+            }
+        }
+    }
+
+    private void SpawnCharacterOnProject(Project project, Character character, GameObject building)
+    {
+        GameObject characterObject = Instantiate(characterPrefab, characterContainer);
+        State state = characterObject.GetComponent<State>();
+        state.SetAnimationController("IDLE");
+        state.UpdatePosition(new Vector3(project.position.x, project.position.y, project.position.z));
+        Vector3 position = building.transform.position;
+        position.y = 0;
+        characterObject.transform.LookAt(position);
+        Transform nameTransform = characterObject.transform.Find("Name");
+        GameObject name = nameTransform.gameObject;
+        TextMeshPro text = name.GetComponent<TextMeshPro>();
+        text.SetText(character.name);
     }
 
     private void SetEnemyPositions(List<GameObject> enemyStates, Position position, GameObject character)
@@ -79,7 +121,7 @@ public class ConfigurationLoader : MonoBehaviour
         }
     }
 
-    private GameObject SpawnCharacter(Battle battle)
+    private GameObject SpawnCharacterInBattle(Battle battle)
     {
         GameObject characterObject = Instantiate(characterPrefab, characterContainer);
         State state = characterObject.GetComponent<State>();
@@ -95,13 +137,15 @@ public class ConfigurationLoader : MonoBehaviour
     private GameObject SpawnEnemy(Enemy enemy)
     {
         GameObject enemyPrefab;
-        if(enemy.type == "ORC")
+        if (enemy.type == "ORC")
         {
             enemyPrefab = orcPrefab;
-        } else if(enemy.type == "BEHOLDER")
+        }
+        else if (enemy.type == "BEHOLDER")
         {
             enemyPrefab = beholderPrefab;
-        } else
+        }
+        else
         {
             enemyPrefab = orcPrefab;
         }
