@@ -71,7 +71,7 @@ export class VistaAdminComponent {
     console.log(this.selectedManor?.name);
   };
 
-  public deleteManor(manor: any) {
+  public showDeleteManor(manor: any) {
     this.selectedManor = manor;
     this.httpClient.delete(this.manorsBaseUrl + '/manors/' + this.selectedManor!.id, this.httpOptions).subscribe(response => {
       console.log(response)
@@ -126,22 +126,6 @@ export class VistaAdminComponent {
     };
   }
 
-  public deleteHousehold(manor: any, household: any) {
-    this.selectedManor = manor;
-    this.selectedHousehold = household;
-    const filteredHouseholds = this.selectedManor?.households.filter(household => household.id != this.selectedHousehold?.id);
-    this.selectedManor = {
-      households: filteredHouseholds ? filteredHouseholds : [],
-      name: this.selectedManor!.name,
-      id: this.selectedManor!.id,
-    };
-
-    this.httpClient.put(this.manorsBaseUrl + '/manors/' + this.selectedManor!.id, this.selectedManor, this.httpOptions).subscribe(response => {
-      console.log(response)
-      this.getManors();
-    });
-  }
-
   public addMember() {
     console.log('hello from addmember');
     if (this.membername == undefined || this.memberinitials == undefined) {
@@ -159,22 +143,4 @@ export class VistaAdminComponent {
       this.displayAddMember = false;
     };
   }
-  
-  // public deleteMember(manor: any, household: any, selectedMember: any) {
-  //   this.selectedManor = manor;
-  //   this.selectedHousehold = household;
-  //   const householdToEdit = this.selectedManor?.households.find(household => household.id == this.selectedHousehold?.id);
-  //   const filteredMembers = householdToEdit?.members.filter(members => members.id != selectedMember.id);
-    
-  //   this.selectedManor = {
-  //     households: filteredHouseholds ? filteredHouseholds : [],
-  //     name: this.selectedManor!.name,
-  //     id: this.selectedManor!.id,
-  //   };
-
-  //   this.httpClient.put(this.manorsBaseUrl + '/manors/' + this.selectedManor!.id, this.selectedManor, this.httpOptions).subscribe(response => {
-  //     console.log(response)
-  //     this.getManors();
-  //   });
-  // }
 }
