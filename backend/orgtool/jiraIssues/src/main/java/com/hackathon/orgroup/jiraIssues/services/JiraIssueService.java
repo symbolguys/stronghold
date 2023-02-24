@@ -9,7 +9,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Base64;
-import java.io.IOException;
 
 @Service
 public class JiraIssueService {
@@ -31,7 +30,7 @@ public class JiraIssueService {
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return response.body();
+        return new ObjectMapper().readValue(response.body(), JiraIssue.class);
     }
 }
 

@@ -9,6 +9,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.symbolguys.stronghold.vista.model.Battle;
+import com.symbolguys.stronghold.vista.model.Character;
+import com.symbolguys.stronghold.vista.model.Configuration;
+import com.symbolguys.stronghold.vista.model.Enemy;
+import com.symbolguys.stronghold.vista.model.Member;
+import com.symbolguys.stronghold.vista.model.Position;
+import com.symbolguys.stronghold.vista.model.Project;
+import com.symbolguys.stronghold.vista.model.State;
+
 import io.netty.util.internal.ThreadLocalRandom;
 import lombok.extern.java.Log;
 
@@ -20,14 +29,13 @@ public class Controller {
     public Configuration configuration() {
 
         /*
-        String uri = "http://localhost:3001/get-manors";
-        RestTemplate restTemplate = new RestTemplate();
-        Manor[] manors = restTemplate.getForObject(uri, Manor[].class);
-        */
+         * String uri = "http://localhost:3001/get-manors";
+         * RestTemplate restTemplate = new RestTemplate();
+         * Manor[] manors = restTemplate.getForObject(uri, Manor[].class);
+         */
 
-        String uri2 = "http://manor:8080/get-members";
-        RestTemplate restTemplate2 = new RestTemplate();
-        Member[] members = restTemplate2.getForObject(uri2, Member[].class);
+        Member[] members = new RestTemplate().getForObject("http://manor:8080/get-members",
+                Member[].class);
 
         List<Character> characters = Arrays.asList(members).stream().map(member -> {
             return Character.builder()
@@ -51,10 +59,17 @@ public class Controller {
                 .build();
 
         Enemy enemy = Enemy.builder()
-                .id("123")
+                .id("456")
                 .name("Mr. Defect")
-                .state("FIGHTING")
+                .state("WINNING")
                 .build();
+
+        Enemy enemy2 = Enemy.builder()
+            .id("123")
+            .name("Another Mr. Defect")
+            .state("FIGHTING")
+            .build();
+
 
         Battle battle = Battle.builder()
                 .enemies(List.of(enemy))
@@ -65,6 +80,16 @@ public class Controller {
                         .z(6)
                         .build())
                 .build();
+
+        Battle battle2 = Battle.builder()
+            .enemies(List.of(enemy2, enemy2))
+            .character(manie)
+            .position(Position.builder()
+                .x(7)
+                .y(8)
+                .z(9)
+                .build())
+            .build();
 
         Project project = Project.builder()
                 .characters(List.of(rin))
@@ -78,6 +103,7 @@ public class Controller {
 
         List<Battle> battles = new ArrayList<Battle>();
         battles.add(battle);
+        battles.add(battle2);
         battles.addAll(characterBattles);
 
         log.info(battles.toString());
@@ -107,9 +133,6 @@ public class Controller {
     }
 
     private int randomPositionInt() {
-        log.info("ahh");
-        int random = ThreadLocalRandom.current().nextInt(0, 10 + 1);
-        log.info(random + "d");
-        return random;
+        return ThreadLocalRandom.current().nextInt(0, 10 + 1);
     }
 }
