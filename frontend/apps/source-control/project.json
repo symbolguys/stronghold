@@ -23,6 +23,7 @@
           "node_modules/primeicons/primeicons.css",
           "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
           "node_modules/primeng/resources/primeng.min.css",
+          "node_modules/primeflex/primeflex.css",
           "apps/source-control/src/styles.scss"
         ],
         "scripts": [],
@@ -73,7 +74,8 @@
       "defaultConfiguration": "development",
       "options": {
         "port": 4202,
-        "publicHost": "http://localhost:4202"
+        "publicHost": "http://localhost:4202",
+        "proxyConfig": "apps/source-control/src/proxy.conf.json"
       }
     },
     "extract-i18n": {

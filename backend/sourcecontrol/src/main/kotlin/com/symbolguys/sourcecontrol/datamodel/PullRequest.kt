@@ -1,15 +1,26 @@
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.Id
+package com.symbolguys.sourcecontrol.datamodel
+
+import jakarta.persistence.*
 import java.util.*
 
 @Entity
+@Table(name = "\"pull_request\"")
 data class PullRequest(
-  @Id @GeneratedValue
-  val id: UUID? = UUID.randomUUID(),
-  val state: String,
-  val title: String,
-  val updateDate: Date,
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  val id: Long?,
+  val title: String?,
+  val destination: String?,
+  val status: String?,
+  val state: String?,
+  val quality: String?,
+  val updateDate: Date?,
   val closeDate: Date?,
-  val createDate: Date
-)
+  val createDate: Date?,
+  val commits: Long?,
+  val fileChanges: Long?,
+  val reviewers: Long?,
+  val comments: Long?
+) {
+  constructor(): this(null, null, null, null, null, null, null, null, null, null, null, null, null)
+}
