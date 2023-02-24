@@ -1,15 +1,15 @@
 package com.orgtool.jiraissueapi.models;
 
-public class JiraIssueResponse {
+public class QueueMessage {
 
     private String correlationId;
     private String status;
     private String message;
 
-    public JiraIssueResponse() {
+    public QueueMessage() {
     }
 
-    public JiraIssueResponse(String responseStr) {
+    public QueueMessage(String responseStr) {
         String[] parts = responseStr.split(",", 3);
         this.correlationId = parts[0];
         this.status = parts[1];
