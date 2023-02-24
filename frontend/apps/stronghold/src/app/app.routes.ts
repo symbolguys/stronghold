@@ -3,6 +3,11 @@ import { Route } from '@angular/router';
 
 export const appRoutes: Route[] = [
   {
+    path: 'source-control',
+    loadChildren: () =>
+      import('source-control/Routes').then((m) => m.remoteRoutes),
+  },
+  {
     path: 'continuous-integration',
     loadChildren: () =>
       import('continuous-integration/Routes').then((m) => m.remoteRoutes),

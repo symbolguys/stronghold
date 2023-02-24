@@ -1,4 +1,4 @@
 module.exports = {
   name: 'stronghold',
-  remotes: ['continuous-integration'],
+  remotes: ['continuous-integration', 'source-control'],
 };
