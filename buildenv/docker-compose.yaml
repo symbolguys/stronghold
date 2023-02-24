@@ -39,6 +39,18 @@ services:
       - stronghold
     depends_on:
       - sourcecontrol
+  vista-client:
+    container_name: vista-client
+    build:
+      context: ../frontend
+      dockerfile: apps/vista-viz/Dockerfile
+    restart: unless-stopped
+    ports:
+      - 8087:80
+    networks:
+      - stronghold
+    depends_on:
+      - vista
 
 # This is an example of springboot service: https://www.appsdeveloperblog.com/spring-boot-microservices-deployment-with-docker-compose/
   sourcecontrol:

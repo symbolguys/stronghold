@@ -3,8 +3,7 @@ module.exports = {
   remotes: [
     'continuous-integration',
     'source-control',
-    'vista-admin',
-    'vista',
+    // 'vista-admin',
     'vista-viz',
   ],
 };

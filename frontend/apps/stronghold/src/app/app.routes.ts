@@ -7,11 +7,11 @@ export const appRoutes: Route[] = [
     loadChildren: () =>
       import('vista-viz/Module').then((m) => m.RemoteEntryModule),
   },
-  {
-    path: 'vista-admin',
-    loadChildren: () =>
-      import('vista-admin/Routes').then((m) => m.remoteRoutes),
-  },
+  // {
+  //   path: 'vista-admin',
+  //   loadChildren: () =>
+  //     import('vista-admin/Routes').then((m) => m.remoteRoutes),
+  // },
   {
     path: 'source-control',
     loadChildren: () =>
