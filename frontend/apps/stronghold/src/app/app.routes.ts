@@ -3,6 +3,11 @@ import { Route } from '@angular/router';
 
 export const appRoutes: Route[] = [
   {
+    path: 'vista-viz',
+    loadChildren: () =>
+      import('vista-viz/Module').then((m) => m.RemoteEntryModule),
+  },
+  {
     path: 'vista-admin',
     loadChildren: () =>
       import('vista-admin/Routes').then((m) => m.remoteRoutes),
