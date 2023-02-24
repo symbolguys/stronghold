@@ -20,7 +20,8 @@ data class PullRequest(
   val commits: Long?,
   val fileChanges: Long?,
   val reviewers: Long?,
-  val comments: Long?
+  val comments: Long?,
+  val author: String?
 ) {
-  constructor(): this(null, null, null, null, null, null, null, null, null, null, null, null, null)
+  constructor(): this(null, null, null, null, null, null, null, null, null, null, null, null, null, null)
 }

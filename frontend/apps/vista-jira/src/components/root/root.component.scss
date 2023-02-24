@@ -1,0 +1,38 @@
+:host {
+    display: block;
+    background-color: #f2f7ff;
+  }
+  
+  .p-treetable .p-treetable-thead > tr > th {
+    background-color: #0079bf;
+    color: white;
+  }
+  
+  .p-treetable .p-treetable-tbody > tr > td {
+    background-color: white;
+    color: #333333;
+  }
+  
+  .p-treetable .p-treetable-row .p-treetable-toggler:before {
+    color: #333333;
+  }
+  
+  .p-treetable .p-treetable-row .p-treetable-toggler:hover:before {
+    color: #0079bf;
+  }
+  
+  .p-treetable .p-treetable-row .p-treetable-toggler.p-highlight:before {
+    color: #0079bf;
+  }
+
+  .p-treetable .p-treetable-tbody > tr {
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+  }
+  
+  .p-treetable .p-treetable-thead > tr {
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+body {
+    background-color: lightgray;
+}

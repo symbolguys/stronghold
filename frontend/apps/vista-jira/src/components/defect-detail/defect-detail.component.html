@@ -1,0 +1,59 @@
+<div class="container">
+    <div class="card">
+      <div class="card-header">
+        {{ defect.key }} - {{ defect.summary }}
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <table>
+              <tr>
+                <td><b>Assignee:</b></td>
+                <td>{{ defect.assignee }}</td>
+              </tr>
+              <tr>
+                <td><b>Status:</b></td>
+                <td>{{ defect.status }}</td>
+              </tr>
+              <tr>
+                <td><b>Priority:</b></td>
+                <td>{{ defect.priority }}</td>
+              </tr>
+              <tr>
+                <td><b>Severity:</b></td>
+                <td>{{ defect.severity }}</td>
+              </tr>
+              <tr>
+                <td><b>Description:</b></td>
+                <td>{{ defect.description }}</td>
+              </tr>
+            </table>
+          </div>
+          <div class="col-md-6">
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <h4>Comments</h4>
+  
+    <div class="comments">
+      <div class="comment" *ngFor="let comment of defect.comments">
+        <div class="author">{{ comment.author }}:</div>
+        <div class="body">{{ comment.body }}</div>
+        <hr />
+      </div>
+    </div>
+  
+    <h4>Add Comment</h4>
+  
+    <div class="comment-form">
+      <form (ngSubmit)="submitComment()">
+        <div class="form-group">
+          <textarea class="form-control" rows="3" placeholder="Enter your comment"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Comment</button>
+      </form>
+    </div>
+  </div>
+  

@@ -4,4 +4,6 @@ declare module 'source-control/Routes';
 
 declare module 'vista-admin/Routes';
 
+declare module 'vista-jira/Routes';
+
 declare module 'vista-viz/Module';
