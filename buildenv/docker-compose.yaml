@@ -8,10 +8,10 @@ services:
       - 9001:9000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - portainer-data:/data 
+      - portainer-data:/data
     networks:
       - stronghold
-  
+
   postgres:
     image: postgres:latest
     container_name: postgres
@@ -45,7 +45,7 @@ services:
   sourcecontrol:
     container_name: sourcecontrol
     image: sourcecontrol
-    build: 
+    build:
       context: ../backend/sourcecontrol
       dockerfile: Dockerfile
     ports:
@@ -58,6 +58,19 @@ services:
       - SPRING_DATASOURCE_USERNAME=sa
       - SPRING_DATASOURCE_PASSWORD=Password111
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create
+
+  vista:
+    image: mringive/symbolguys-stronghold-vista:latest
+    container_name: vista
+    restart: unless-stopped
+    ports:
+      - 3000:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - stronghold
+    depends_on:
+      - portainer
 
 volumes:
   postgres-data:
