@@ -1,8 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.UIElements;
 
 public class ConfigurationLoader : MonoBehaviour
 {
@@ -45,12 +44,20 @@ public class ConfigurationLoader : MonoBehaviour
 
         foreach (Battle battle in configurationData.battles)
         {
-            GameObject characterObject = Instantiate(characterPrefab, characterContainer);
-            State state = characterObject.GetComponent<State>();
-            state.UpdatePosition(new Vector3(battle.position.x, battle.position.y, battle.position.z));
-            state.SetAnimationController(battle.character.state);
-            
+            SpawnCharacter(battle);
         }
+    }
+
+    private void SpawnCharacter(Battle battle)
+    {
+        GameObject characterObject = Instantiate(characterPrefab, characterContainer);
+        State state = characterObject.GetComponent<State>();
+        state.UpdatePosition(new Vector3(battle.position.x, battle.position.y, battle.position.z));
+        state.SetAnimationController(battle.character.state);
+        Transform nameTransform = characterObject.transform.Find("Name");
+        GameObject name = nameTransform.gameObject;
+        TextMeshPro text = name.GetComponent<TextMeshPro>();
+        text.SetText(battle.character.name);
     }
 }
 
