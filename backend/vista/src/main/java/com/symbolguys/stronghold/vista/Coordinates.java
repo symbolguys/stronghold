@@ -42,9 +42,9 @@ public class Coordinates {
 
 
     public static Position outer = Position.builder()
-    .x(-38f)
-    .y(0f)
-    .z(-1f)
+    .x(-4.8f)
+    .y(0.46f)
+    .z(-1.58f)
     .build();
 
 }
