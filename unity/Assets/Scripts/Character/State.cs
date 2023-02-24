@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class State : MonoBehaviour
 {
+    public GameObject nirmo;
     // Start is called before the first frame update
     void Start()
     {
@@ -13,6 +14,7 @@ public class State : MonoBehaviour
     // Update is called once per frame
     void Update()
     { 
+        GameObject developer = new GameObject();
     }
 
     void UpdatePosition(Vector3 position)
