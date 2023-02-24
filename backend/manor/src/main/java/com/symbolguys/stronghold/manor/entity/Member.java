@@ -20,6 +20,10 @@ public class Member {
     private String initials;
     private String character;
 
+    public long getId() {
+        return id;
+    }
+
     public String getCharacter() {
         return character;
     }
