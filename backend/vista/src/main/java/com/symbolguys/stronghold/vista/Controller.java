@@ -69,6 +69,13 @@ public class Controller {
                 .type(EnemyType.BEHOLDER)
                 .build();
 
+        Enemy enemy3 = Enemy.builder()
+                .id("45699")
+                .name("Orc")
+                .state(State.WINNING)
+                .type(EnemyType.ORC)
+                .build();
+
         Battle battle = Battle.builder()
                 .enemies(List.of(enemy))
                 .character(manie)
@@ -81,9 +88,9 @@ public class Controller {
                 .position(Coordinates.wallI1)
                 .build();
 
-        Battle battle3 = Battle.builder()
-                .enemies(List.of(enemy2, enemy2))
-                .character(manie)
+        Battle battleOutside = Battle.builder()
+                .enemies(List.of(enemy3, enemy3))
+                .character(rin)
                 .position(Coordinates.outer)
                 .build();
 
@@ -126,6 +133,7 @@ public class Controller {
         List<Battle> battles = new ArrayList<Battle>();
         battles.add(battle);
         battles.add(battle2);
+        battles.add(battleOutside);
         battles.addAll(characterBattles);
 
         List<Project> projects = List.of(
