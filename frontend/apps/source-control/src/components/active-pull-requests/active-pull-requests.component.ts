@@ -3,14 +3,20 @@ import { CommonModule } from '@angular/common';
 import { PullRequest } from '../../dtos/pull-request.data';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { DialogService } from 'primeng/dynamicdialog';
+import { PullRequestDialogComponent } from '../pull-request-dialog/pull-request-dialog.component';
 
 @Component({
   selector: 'frontend-active-pull-requests',
   standalone: true,
+  providers: [DialogService],
   imports: [
     CommonModule,
     TableModule,
     DialogModule,
+    DynamicDialogModule,
+    PullRequestDialogComponent,
   ],
   templateUrl: './active-pull-requests.component.html',
   styleUrls: ['./active-pull-requests.component.scss'],
@@ -18,6 +24,8 @@ import { DialogModule } from 'primeng/dialog';
 export class ActivePullRequestsComponent implements OnInit {
   pullRequests: PullRequest[] = [];
   display = false;
+
+  constructor(public dialogService: DialogService) {}
 
   ngOnInit() {
     this.pullRequests = [
@@ -88,7 +96,12 @@ export class ActivePullRequestsComponent implements OnInit {
   }
 
   showSelectedPullRequest(rowData: PullRequest) {
-    this.display = true;
-    console.log(rowData);
+    this.dialogService.open(PullRequestDialogComponent, {
+      header: `Pull-Request: ${rowData.title}`,
+      width: '70%',
+      height: '50%',
+      maximizable: true,
+      data: rowData
+    });
   }
 }
