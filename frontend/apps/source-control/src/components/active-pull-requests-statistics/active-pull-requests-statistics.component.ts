@@ -1,38 +1,36 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartModule } from 'primeng/chart';
+import { PullRequestDummyData } from '../../dtos/pull-request.dummy';
 
 @Component({
   selector: 'frontend-active-pull-requests-statistics',
   standalone: true,
+  providers: [PullRequestDummyData],
   imports: [CommonModule, ChartModule],
   templateUrl: './active-pull-requests-statistics.component.html',
   styleUrls: ['./active-pull-requests-statistics.component.scss'],
 })
-export class ActivePullRequestsStatisticsComponent {
+export class ActivePullRequestsStatisticsComponent implements OnInit {
   stackedOptions: any;
   stackedData: any;
+
+  constructor(private dummyData: PullRequestDummyData) {}
 
   ngOnInit() {
     this.stackedData = {
       labels: ['Commits', 'File Changes', 'Reviewers', 'Comments'],
-      datasets: [
-        {
-          label: 'PR 1',
-          backgroundColor: '#42A5F5',
-          data: [50, 25, 12, 48, 90, 76, 42],
-        },
-        {
-          label: 'PR 2',
-          backgroundColor: '#66BB6A',
-          data: [21, 84, 24, 75, 37, 65, 34],
-        },
-        {
-          label: 'PR 3',
-          backgroundColor: '#FFA726',
-          data: [41, 52, 24, 74, 23, 21, 32],
-        },
-      ],
+      datasets: this.dummyData.get().filter(value => value.state === "MERGED").map(value => {
+        return {
+          label: value.title,
+          data: [
+            value.commits,
+            value.fileChanges,
+            value.reviewers,
+            value.comments
+          ]
+        }
+      })
     };
 
     this.stackedOptions = {

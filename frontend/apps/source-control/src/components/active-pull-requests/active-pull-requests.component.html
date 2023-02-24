@@ -8,6 +8,7 @@
   <ng-template pTemplate="header">
     <tr>
       <th>Title</th>
+      <th>Destination</th>
       <th>Quality</th>
       <th>Update Date</th>
       <th>Status</th>
@@ -16,6 +17,7 @@
   <ng-template pTemplate="body" let-pullRequest>
     <tr (click)="showSelectedPullRequest(pullRequest)">
       <td>{{ pullRequest.title }}</td>
+      <td>{{ pullRequest.destination }}</td>
       <td>{{ pullRequest.quality }}</td>
       <td>{{ pullRequest.updateDate }}</td>
       <td>{{ pullRequest.status }}</td>

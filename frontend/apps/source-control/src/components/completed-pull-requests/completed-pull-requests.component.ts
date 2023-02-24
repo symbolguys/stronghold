@@ -6,11 +6,12 @@ import { DialogModule } from 'primeng/dialog';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DialogService } from 'primeng/dynamicdialog';
 import { PullRequestDialogComponent } from '../pull-request-dialog/pull-request-dialog.component';
+import { PullRequestDummyData } from '../../dtos/pull-request.dummy';
 
 @Component({
   selector: 'frontend-completed-pull-requests',
   standalone: true,
-  providers: [DialogService],
+  providers: [DialogService, PullRequestDummyData],
   imports: [
     CommonModule,
     TableModule,
@@ -21,78 +22,17 @@ import { PullRequestDialogComponent } from '../pull-request-dialog/pull-request-
   templateUrl: './completed-pull-requests.component.html',
   styleUrls: ['./completed-pull-requests.component.scss'],
 })
-export class CompletedPullRequestsComponent {
+export class CompletedPullRequestsComponent implements OnInit {
   pullRequests: PullRequest[] = [];
   display = false;
 
-  constructor(public dialogService: DialogService) {}
+  constructor(
+    private dialogService: DialogService,
+    private dummyData: PullRequestDummyData
+  ) {}
 
   ngOnInit() {
-    this.pullRequests = [
-      new PullRequest(
-        'ID 1',
-        'Test 1',
-        'HIGH',
-        'ACTIVE',
-        new Date(),
-        new Date(),
-        new Date()
-      ),
-      new PullRequest(
-        'ID 2',
-        'Test 2',
-        'HIGH',
-        'INACTIVE',
-        new Date(),
-        new Date(),
-        new Date()
-      ),
-      new PullRequest(
-        'ID 3',
-        'Test 3',
-        'MEDIUM',
-        'ACTIVE',
-        new Date(),
-        new Date(),
-        new Date()
-      ),
-      new PullRequest(
-        'ID 4',
-        'Test 4',
-        'HIGH',
-        'MERGED',
-        new Date(),
-        new Date(),
-        new Date()
-      ),
-      new PullRequest(
-        'ID 5',
-        'Test 5',
-        'LOW',
-        'DECLINED',
-        new Date(),
-        new Date(),
-        new Date()
-      ),
-      new PullRequest(
-        'ID 6',
-        'Test 6',
-        'MEDIUM',
-        'FAILED',
-        new Date(),
-        new Date(),
-        new Date()
-      ),
-      new PullRequest(
-        'ID 7',
-        'Test 7',
-        'MEDIUM',
-        'FAILED',
-        new Date(),
-        new Date(),
-        new Date()
-      ),
-    ];
+    this.pullRequests = this.dummyData.get().filter(value => value.state === "MERGED");
   }
 
   showSelectedPullRequest(rowData: PullRequest) {
