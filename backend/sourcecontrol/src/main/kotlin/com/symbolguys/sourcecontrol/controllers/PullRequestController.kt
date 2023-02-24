@@ -12,8 +12,8 @@ import java.util.*
 class PullRequestController (val prRepo: PullRequestRepository) {
 
     @GetMapping
-    fun getAllPullRequests(): Flux<Iterable<PullRequest>> {
-        return Flux.just(prRepo.findAll())
+    fun getAllPullRequests(): Iterable<PullRequest> {
+        return prRepo.findAll()
     }
 
     @PostMapping
