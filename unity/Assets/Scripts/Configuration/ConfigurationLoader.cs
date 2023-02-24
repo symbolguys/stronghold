@@ -5,61 +5,62 @@ using UnityEngine.Networking;
 
 public class ConfigurationLoader : MonoBehaviour
 {
-    public string configEndpointUrl;
-    public float updateIntervalSec = 5f;
+    [SerializeField] private GameObject characterPrefab;
+    [SerializeField] private Transform characterContainer;
+    [SerializeField] private string configEndpoint;
 
-    public GameObject characterPrefab;
+    private ConfigurationData configurationData;
 
     private void Start()
     {
-        InvokeRepeating("GetConfig", 0f, updateIntervalSec);
+        StartCoroutine(GetConfig());
+
     }
 
     private IEnumerator GetConfig()
     {
-        UnityWebRequest request = UnityWebRequest.Get(configEndpointUrl);
+        UnityWebRequest request = UnityWebRequest.Get(configEndpoint);
 
         yield return request.SendWebRequest();
 
-        if (request.result == UnityWebRequest.Result.Success)
+        if (request.result != UnityWebRequest.Result.Success)
         {
-            string configData = request.downloadHandler.text;
-            ProcessConfig(configData);
+            Debug.LogError($"Failed to fetch configuration data: {request.error}");
+            yield break;
         }
-        else
-        {
-            Debug.LogError("Error retrieving configuration: " + request.error);
-        }
+
+        string json = request.downloadHandler.text;
+        configurationData = JsonUtility.FromJson<ConfigurationData>(json);
+        UpdateCharacterPositions(configurationData);
     }
 
-    private void ProcessConfig(string configData)
+    private void UpdateCharacterPositions(ConfigurationData configurationData)
     {
-        ConfigurationData data = JsonUtility.FromJson<ConfigurationData>(configData);
+        foreach (Transform child in characterContainer.transform)
+        {
+            Destroy(child.gameObject);
+        }
 
-        foreach (Team team in data.teams)
+        foreach (Team team in configurationData.teams)
         {
             foreach (Character character in team.characters)
             {
-                GameObject characterObj = Instantiate(characterPrefab, Vector3.zero, Quaternion.identity, transform);
-                characterObj.name = character.name;
-                characterObj.transform.localPosition = new Vector3(character.position.x, character.position.y, 0f);
-
-                Animator animator = characterObj.GetComponent<Animator>();
-                if (animator != null)
-                {
-                    animator.Play(character.state); // convert the enum value to a string and pass it to animator.Play
-                }
+                GameObject characterObject = Instantiate(characterPrefab, characterContainer);
+                characterObject.transform.position = new Vector3(character.position.x, character.position.y, character.position.z);
+                Animator animator = characterObject.GetComponent<Animator>();
+                animator.Play("Fight");
             }
         }
     }
 }
 
-
+[System.Serializable]
 public class ConfigurationData
 {
     public Team[] teams;
 }
 
+[System.Serializable]
 public class Team
 {
     public string name;
@@ -70,6 +71,7 @@ public class Team
 public class Character
 {
     public string name;
-    public Vector2 position;
+    public string id;
+    public Vector3 position;
     public string state;
 }
