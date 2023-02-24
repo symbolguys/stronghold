@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -15,25 +16,20 @@ import com.symbolguys.stronghold.vista.model.Configuration;
 import com.symbolguys.stronghold.vista.model.Enemy;
 import com.symbolguys.stronghold.vista.model.EnemyType;
 import com.symbolguys.stronghold.vista.model.Member;
-import com.symbolguys.stronghold.vista.model.Position;
 import com.symbolguys.stronghold.vista.model.Project;
 import com.symbolguys.stronghold.vista.model.State;
 
-import io.netty.util.internal.ThreadLocalRandom;
 import lombok.extern.java.Log;
 
 @Log
 @RestController
 public class Controller {
 
+    @Autowired
+    ManorService manorService;
+
     @GetMapping("/configuration")
     public Configuration configuration() {
-
-        /*
-         * String uri = "http://localhost:3001/get-manors";
-         * RestTemplate restTemplate = new RestTemplate();
-         * Manor[] manors = restTemplate.getForObject(uri, Manor[].class);
-         */
 
         Member[] members = new RestTemplate().getForObject("http://manor:8080/get-members",
                 Member[].class);
@@ -67,52 +63,88 @@ public class Controller {
                 .build();
 
         Enemy enemy2 = Enemy.builder()
-            .id("123")
-            .name("Another Mr. Defect")
-            .state(State.FIGHTING)
-            .type(EnemyType.BEHOLDER)
-            .build();
+                .id("123")
+                .name("Another Mr. Defect")
+                .state(State.FIGHTING)
+                .type(EnemyType.BEHOLDER)
+                .build();
+
+        Enemy enemy3 = Enemy.builder()
+                .id("45699")
+                .name("Orc")
+                .state(State.WINNING)
+                .type(EnemyType.ORC)
+                .build();
 
         Battle battle = Battle.builder()
                 .enemies(List.of(enemy))
                 .character(manie)
-                .position(Position.builder()
-                        .x(4)
-                        .y(5)
-                        .z(6)
-                        .build())
+                .position(Coordinates.wallI2)
                 .build();
 
         Battle battle2 = Battle.builder()
-            .enemies(List.of(enemy2, enemy2, enemy2))
-            .character(manie)
-            .position(Position.builder()
-                .x(7)
-                .y(8)
-                .z(9)
-                .build())
-            .build();
+                .enemies(List.of(enemy2, enemy2, enemy2))
+                .character(manie)
+                .position(Coordinates.wallI1)
+                .build();
 
-        Project project = Project.builder()
-                .characters(List.of(rin))
-                .type("House")
-                .position(Position.builder()
-                        .x(1)
-                        .y(2)
-                        .z(3)
-                        .build())
+        Battle battleOutside = Battle.builder()
+                .enemies(List.of(enemy3, enemy3))
+                .character(rin)
+                .position(Coordinates.outer)
+                .build();
+
+        Project projectHouseU1 = Project.builder()
+                .characters(List.of(Character.builder()
+                        .name("blacksmith")
+                        .state(State.FIGHTING)
+                        .build()))
+                .type("blacksmith")
+                .position(Coordinates.blacksmith)
+                .build();
+
+        Project projectHouse02 = Project.builder()
+                .characters(List.of(Character.builder()
+                        .name("outerSmallRedHouse")
+                        .state(State.FIGHTING)
+                        .build()))
+                .type("outerSmallRedHouse")
+                .position(Coordinates.outerSmallRedHouse)
+                .build();
+
+        Project projecthouseI1 = Project.builder()
+                .characters(List.of(Character.builder()
+                        .name("innerOrangeHouse")
+                        .state(State.FIGHTING)
+                        .build()))
+                .type("innerOrangeHouse")
+                .position(Coordinates.innerOrangeHouse)
+                .build();
+
+        Project projecthouseI2 = Project.builder()
+                .characters(List.of(Character.builder()
+                        .name("field")
+                        .state(State.FIGHTING)
+                        .build()))
+                .type("field")
+                .position(Coordinates.field)
                 .build();
 
         List<Battle> battles = new ArrayList<Battle>();
         battles.add(battle);
         battles.add(battle2);
+        battles.add(battleOutside);
         battles.addAll(characterBattles);
 
-        log.info(battles.toString());
+        List<Project> projects = List.of(
+                projectHouseU1,
+                projectHouse02,
+                projecthouseI1,
+                projecthouseI2);
 
         return Configuration.builder()
                 .battles(battles)
-                .projects(List.of(project))
+                .projects(projects)
                 .build();
     }
 
@@ -126,15 +158,7 @@ public class Controller {
         return Battle.builder()
                 .enemies(List.of(enemy))
                 .character(character)
-                .position(Position.builder()
-                        .x(randomPositionInt())
-                        .y(randomPositionInt())
-                        .z(randomPositionInt())
-                        .build())
+                .position(Coordinates.wallI2)
                 .build();
-    }
-
-    private int randomPositionInt() {
-        return ThreadLocalRandom.current().nextInt(0, 10 + 1);
     }
 }
