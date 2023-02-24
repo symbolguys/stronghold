@@ -12,8 +12,6 @@ services:
       - stronghold
   
   postgres:
-    profiles:
-      - donotstart
     image: postgres:latest
     container_name: postgres
     restart: unless-stopped
