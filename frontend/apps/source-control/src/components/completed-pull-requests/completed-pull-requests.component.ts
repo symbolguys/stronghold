@@ -9,7 +9,7 @@ import { PullRequestDialogComponent } from '../pull-request-dialog/pull-request-
 import { PullRequestDummyData } from '../../dtos/pull-request.dummy';
 
 @Component({
-  selector: 'frontend-active-pull-requests',
+  selector: 'frontend-completed-pull-requests',
   standalone: true,
   providers: [DialogService, PullRequestDummyData],
   imports: [
@@ -19,20 +19,20 @@ import { PullRequestDummyData } from '../../dtos/pull-request.dummy';
     DynamicDialogModule,
     PullRequestDialogComponent,
   ],
-  templateUrl: './active-pull-requests.component.html',
-  styleUrls: ['./active-pull-requests.component.scss'],
+  templateUrl: './completed-pull-requests.component.html',
+  styleUrls: ['./completed-pull-requests.component.scss'],
 })
-export class ActivePullRequestsComponent implements OnInit {
+export class CompletedPullRequestsComponent implements OnInit {
   pullRequests: PullRequest[] = [];
   display = false;
 
   constructor(
-    public dialogService: DialogService,
+    private dialogService: DialogService,
     private dummyData: PullRequestDummyData
   ) {}
 
   ngOnInit() {
-    this.pullRequests = this.dummyData.get().filter(value => value.state === "OPEN");
+    this.pullRequests = this.dummyData.get().filter(value => value.state === "MERGED");
   }
 
   showSelectedPullRequest(rowData: PullRequest) {
