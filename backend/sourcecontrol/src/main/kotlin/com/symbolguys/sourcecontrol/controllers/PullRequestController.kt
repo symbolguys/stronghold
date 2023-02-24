@@ -11,13 +11,6 @@ import java.util.*
 @RequestMapping("/pullRequests")
 class PullRequestController (val prRepo: PullRequestRepository) {
 
-    @GetMapping("/test")
-    fun getMockedPullRequest() : Flux<List<PullRequest>>{
-        var prList=mutableListOf<PullRequest>()
-        prList.add(PullRequest(-1,"MERGED","Great Title", Date(101199), Date(15122018), Date(12101990) ))
-        return Flux.just(prList)
-    }
-
     @GetMapping
     fun getAllPullRequests(): Flux<Iterable<PullRequest>> {
         return Flux.just(prRepo.findAll())

@@ -54,14 +54,6 @@ services:
     restart: unless-stopped
     depends_on:
       - postgres
-    environment:
-      - 'spring.r2dbc.url=r2dbc:postgresql://postgres:5432/mydatabase'
-      - 'spring.r2dbc.username=sa'
-      - 'spring.r2dbc.password=Password111'
-      - 'spring.r2dbc.pool.max-size=10'
-      - 'spring.jpa.hibernate.ddl-auto=create'
-      - 'spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true'
-      - 'spring.jpa.properties.hibernate.dialect= org.hibernate.dialect.PostgreSQLDialect'
 
   vista:
     image: mringive/symbolguys-stronghold-vista:latest

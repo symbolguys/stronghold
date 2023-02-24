@@ -9,11 +9,16 @@ data class PullRequest(
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   val id: Long?,
-  val state: String?,
   val title: String?,
+  val destination: String?,
+  val status: String?,
+  val state: String?,
   val updateDate: Date?,
   val closeDate: Date?,
-  val createDate: Date?
+  val createDate: Date?,
+  val fileChanges: Long?,
+  val reviewers: Long?,
+  val comments: Long?
 ) {
-  constructor(): this(null, null, null, null, null, null)
+  constructor(): this(null, null, null, null, null, null, null, null, null, null, null)
 }
