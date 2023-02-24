@@ -13,7 +13,8 @@ data class PullRequest(
   val title: String?,
   val updateDate: Date?,
   val closeDate: Date?,
-  val createDate: Date?
+  val createDate: Date?,
+  val author: String?
 ) {
-  constructor(): this(null, null, null, null, null, null)
+  constructor(): this(null, null, null, null, null, null,null)
 }

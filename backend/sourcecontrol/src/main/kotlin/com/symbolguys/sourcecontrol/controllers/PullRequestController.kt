@@ -2,6 +2,7 @@ package com.symbolguys.sourcecontrol.controllers
 
 import com.symbolguys.sourcecontrol.datamodel.PullRequest
 import com.symbolguys.sourcecontrol.repository.PullRequestRepository
+import com.symbolguys.sourcecontrol.services.PullRequestService
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono;
@@ -9,17 +10,18 @@ import java.util.*
 
 @RestController
 @RequestMapping("/pullRequests")
-class PullRequestController (val prRepo: PullRequestRepository) {
+class PullRequestController (val prRepo: PullRequestRepository, val prService: PullRequestService) {
 
     @GetMapping("/test")
     fun getMockedPullRequest() : Flux<List<PullRequest>>{
         var prList=mutableListOf<PullRequest>()
-        prList.add(PullRequest(-1,"MERGED","Great Title", Date(101199), Date(15122018), Date(12101990) ))
+        prList.add(PullRequest(-1,"MERGED","Great Title", Date(101199), Date(15122018), Date(12101990), "Mark Twain" ))
         return Flux.just(prList)
     }
 
-    @GetMapping
-    fun getAllPullRequests(): Flux<Iterable<PullRequest>> {
+    @GetMapping("/{baseUrl}/{projectKey}/{repoSlug}/{bearerToken}")
+    fun getAllPullRequests(@PathVariable baseUrl: String, @PathVariable projectKey: String, @PathVariable repoSlug: String, @PathVariable bearerToken: String): Flux<Iterable<PullRequest>> {
+        prService.fetchAllPullRequestsIntoRepo(baseUrl, projectKey, repoSlug, bearerToken)
         return Flux.just(prRepo.findAll())
     }
 

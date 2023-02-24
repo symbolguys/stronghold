@@ -1,14 +1,15 @@
 package com.symbolguys.sourcecontrol.services
 
-import PullRequest
-import com.symbolguys.sourcecontrol.jpa.PullRequestRepository
+import com.symbolguys.sourcecontrol.datamodel.PullRequest
+import com.symbolguys.sourcecontrol.repository.PullRequestRepository
+import org.json.JSONArray
+import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.core.ParameterizedTypeReference
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpMethod
-import org.springframework.http.ResponseEntity
+import org.springframework.http.*
+import org.springframework.http.client.ClientHttpRequestFactory
+import org.springframework.http.client.SimpleClientHttpRequestFactory
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import java.net.URI
@@ -16,18 +17,48 @@ import java.net.URL
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
+import java.time.Instant
+import java.util.*
+
 class PullRequestServiceImpl (private val prRepo: PullRequestRepository) : PullRequestService {
 
 
-    override fun fetchAllPullRequestsIntoRepo(baseUrl : String, projectKey: String, repoSlug: String){
+    override fun fetchAllPullRequestsIntoRepo(baseUrl : String, projectKey: String, repoSlug: String, bearerToken: String){
         var url= "https://$baseUrl/rest/api/latest/projects/$projectKey/repos/$repoSlug/pull-requests"
-        var httpHeaders= HttpHeaders().set("Accept","application/json")
-        val restTemplate = RestTemplate()
-        val requestEntity = HttpEntity<Any>(httpHeaders)
-        val responseType = object : ParameterizedTypeReference<List<PullRequest>>() {}
-        val responseEntity: ResponseEntity<List<PullRequest>> = restTemplate.exchange(url, HttpMethod.GET, requestEntity, responseType)
-        val pullRequests: List<PullRequest> = responseEntity.body ?: emptyList()
-        prRepo.saveAll(pullRequests)
+        var headers= HttpHeaders()
+        headers.accept = listOf(MediaType.APPLICATION_JSON)
+        headers.setBearerAuth(bearerToken)
+        val request = HttpEntity<Any>(headers)
+
+        val factory: ClientHttpRequestFactory = SimpleClientHttpRequestFactory()
+        val restTemplate = RestTemplate(factory)
+
+        val response = restTemplate.exchange(url, HttpMethod.GET, request, String::class.java)
+        var pullRequests : JSONArray? = JSONArray()
+        if (response.statusCodeValue == 200) {
+            pullRequests = response.body?.let { JSONObject(it).getJSONArray("values") }
+            // iterate over the pull requests and create instances of your data class
+        } else {
+            println("Failed to fetch pull requests: ${response.statusCodeValue} ${response.body}")
+        }
+        val pullRequestList = mutableListOf<PullRequest>()
+
+        if (pullRequests != null) {
+            for (i in 0 until pullRequests.length()) {
+                val pr = pullRequests.getJSONObject(i)
+                val id = pr.getInt("id").toLong()
+                var state=pr.getString("state")
+                val title = pr.getString("title")
+                val author = pr.getJSONObject("author").getString("display_name")
+                val crDate = Date.from(Instant.ofEpochMilli(pr.getLong("createdDate")))
+                var clDate= Date.from(Instant.ofEpochMilli(pr.getLong("closedDate")))
+                var udDate=Date.from(Instant.ofEpochMilli(pr.getLong("updatedDate")))
+                val pullRequest = PullRequest(id, title, state, udDate, clDate, crDate, author )
+                pullRequestList.add(pullRequest)
+            }
+        }
+
+        prRepo.saveAll(pullRequestList)
     }
 
 
