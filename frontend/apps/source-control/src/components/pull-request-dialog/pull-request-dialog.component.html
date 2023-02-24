@@ -2,7 +2,8 @@
   <div class="col-6" style="background-color: aquamarine;">
     <p>Destination: {{data?.destination}}</p>
     <p>Created: {{data?.createDate}}</p>
-    <p>Updated/Closed: {{data?.updateDate}}</p>
+    <p>{{getUpdatedClosedString()}}</p>
+    <p>Time Alive: {{getAliveTime()}}</p>
     <p>Status: {{data?.status}}</p>
   </div>
   <div class="col-6" style="background-color: burlywood;">
