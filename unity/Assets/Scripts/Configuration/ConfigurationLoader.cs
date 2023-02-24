@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -45,19 +47,53 @@ public class ConfigurationLoader : MonoBehaviour
         foreach (Battle battle in configurationData.battles)
         {
             SpawnCharacter(battle);
+            List<State> enemyStates = new List<State>();
+            foreach (Enemy enemy in battle.enemies)
+            {
+                enemyStates.Add(SpawnEnemy(enemy));
+            }
+            SetEnemyPositions(enemyStates, battle.position);
         }
+    }
+
+    private void SetEnemyPositions(List<State> enemyStates, Position position)
+    {
+        if (enemyStates.Count == 1)
+        {
+            enemyStates[0].UpdatePosition(new Vector3(position.x, position.y, position.z + 2));
+            enemyStates[0].UpdateDirection(180f);
+        }
+        //else
+        //{
+        //    for (int i = 0; i < enemyStates.Count; i++)
+        //    {
+        //        enemyStates[i].UpdatePosition
+        //    }
+        //}
     }
 
     private void SpawnCharacter(Battle battle)
     {
         GameObject characterObject = Instantiate(characterPrefab, characterContainer);
         State state = characterObject.GetComponent<State>();
-        state.UpdatePosition(new Vector3(battle.position.x, battle.position.y, battle.position.z));
         state.SetAnimationController(battle.character.state);
+        state.UpdatePosition(new Vector3(battle.position.x, battle.position.y, battle.position.z));
         Transform nameTransform = characterObject.transform.Find("Name");
         GameObject name = nameTransform.gameObject;
         TextMeshPro text = name.GetComponent<TextMeshPro>();
         text.SetText(battle.character.name);
+    }
+
+    private State SpawnEnemy(Enemy enemy)
+    {
+        GameObject enemyObject = Instantiate(enemyPrefab, enemyContainer);
+        State state = enemyObject.GetComponent<State>();
+        state.SetAnimationController(enemy.state);
+        Transform nameTransform = enemyObject.transform.Find("Name");
+        GameObject name = nameTransform.gameObject;
+        TextMeshPro text = name.GetComponent<TextMeshPro>();
+        text.SetText(enemy.name);
+        return state;
     }
 }
 
