@@ -31,7 +31,7 @@ import {
 export class ActivePullRequestsComponent implements OnInit {
   pullRequests: PullRequest[] = [];
   display = false;
-  baseUrl = 'http://sourcecontrol:8580';
+  baseUrl = 'http://localhost:4202';
 
   httpOptions = {
     headers: new HttpHeaders({
