@@ -1,1 +1,3 @@
-declare module 'jazerant/Routes';
+declare module 'continuous-integration/Routes';
+
+declare module 'source-control/Routes';

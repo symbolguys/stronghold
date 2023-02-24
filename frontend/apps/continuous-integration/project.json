@@ -1,25 +1,28 @@
 {
-  "name": "jazerant",
+  "name": "continuous-integration",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "sourceRoot": "apps/jazerant/src",
+  "sourceRoot": "apps/continuous-integration/src",
   "prefix": "frontend",
   "targets": {
     "build": {
       "executor": "@nrwl/angular:webpack-browser",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/jazerant",
-        "index": "apps/jazerant/src/index.html",
-        "main": "apps/jazerant/src/main.ts",
+        "outputPath": "dist/apps/continuous-integration",
+        "index": "apps/continuous-integration/src/index.html",
+        "main": "apps/continuous-integration/src/main.ts",
         "polyfills": ["zone.js"],
-        "tsConfig": "apps/jazerant/tsconfig.app.json",
+        "tsConfig": "apps/continuous-integration/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": ["apps/jazerant/src/favicon.ico", "apps/jazerant/src/assets"],
-        "styles": ["apps/jazerant/src/styles.scss"],
+        "assets": [
+          "apps/continuous-integration/src/favicon.ico",
+          "apps/continuous-integration/src/assets"
+        ],
+        "styles": ["apps/continuous-integration/src/styles.scss"],
         "scripts": [],
         "customWebpackConfig": {
-          "path": "apps/jazerant/webpack.config.js"
+          "path": "apps/continuous-integration/webpack.config.js"
         }
       },
       "configurations": {
@@ -38,7 +41,7 @@
           ],
           "outputHashing": "all",
           "customWebpackConfig": {
-            "path": "apps/jazerant/webpack.prod.config.js"
+            "path": "apps/continuous-integration/webpack.prod.config.js"
           }
         },
         "development": {
@@ -56,10 +59,10 @@
       "executor": "@nrwl/angular:webpack-dev-server",
       "configurations": {
         "production": {
-          "browserTarget": "jazerant:build:production"
+          "browserTarget": "continuous-integration:build:production"
         },
         "development": {
-          "browserTarget": "jazerant:build:development"
+          "browserTarget": "continuous-integration:build:development"
         }
       },
       "defaultConfiguration": "development",
@@ -71,21 +74,24 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "browserTarget": "jazerant:build"
+        "browserTarget": "continuous-integration:build"
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/jazerant/**/*.ts", "apps/jazerant/**/*.html"]
+        "lintFilePatterns": [
+          "apps/continuous-integration/**/*.ts",
+          "apps/continuous-integration/**/*.html"
+        ]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/jazerant/jest.config.ts",
+        "jestConfig": "apps/continuous-integration/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
@@ -99,15 +105,15 @@
       "executor": "@nrwl/angular:file-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "jazerant:build",
+        "buildTarget": "continuous-integration:build",
         "port": 4201
       },
       "configurations": {
         "development": {
-          "buildTarget": "jazerant:build:development"
+          "buildTarget": "continuous-integration:build:development"
         },
         "production": {
-          "buildTarget": "jazerant:build:production"
+          "buildTarget": "continuous-integration:build:production"
         }
       }
     }

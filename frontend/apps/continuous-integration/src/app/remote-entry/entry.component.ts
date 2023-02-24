@@ -5,7 +5,7 @@ import { NxWelcomeComponent } from './nx-welcome.component';
 @Component({
   standalone: true,
   imports: [CommonModule, NxWelcomeComponent],
-  selector: 'frontend-jazerant-entry',
+  selector: 'frontend-continuous-integration-entry',
   template: `<frontend-nx-welcome></frontend-nx-welcome>`,
 })
 export class RemoteEntryComponent {}

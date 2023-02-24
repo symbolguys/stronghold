@@ -436,7 +436,7 @@ import { CommonModule } from '@angular/common';
         <div id="welcome">
           <h1>
             <span> Hello there, </span>
-            Welcome jazerant 👋
+            Welcome continuous-integration 👋
           </h1>
         </div>
 
