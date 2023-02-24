@@ -7,5 +7,5 @@ import lombok.Data;
 @Builder
 public class Character {
     private String name;
-    private Position position;
+    private State state;
 }
