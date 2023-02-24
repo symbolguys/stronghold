@@ -6,6 +6,7 @@ class pullRequestDTO{
     val uuId: Long = 0
     val state: String
     val title: String
-    val u: Date
-    val cl: Date
+    val updateDate: Date
+    val closeDate: Date
+    val createDate: Date
 }
