@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UIElements;
 
 public class ConfigurationLoader : MonoBehaviour
 {
     [SerializeField] private GameObject characterPrefab;
+    [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private Transform characterContainer;
+    [SerializeField] private Transform enemyContainer;
     [SerializeField] private string configEndpoint;
 
     private ConfigurationData configurationData;
@@ -14,7 +17,6 @@ public class ConfigurationLoader : MonoBehaviour
     private void Start()
     {
         StartCoroutine(GetConfig());
-
     }
 
     private IEnumerator GetConfig()
@@ -41,15 +43,13 @@ public class ConfigurationLoader : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        foreach (Team team in configurationData.teams)
+        foreach (Battle battle in configurationData.battles)
         {
-            foreach (Character character in team.characters)
-            {
-                GameObject characterObject = Instantiate(characterPrefab, characterContainer);
-                characterObject.transform.position = new Vector3(character.position.x, character.position.y, character.position.z);
-                Animator animator = characterObject.GetComponent<Animator>();
-                animator.Play("Fight");
-            }
+            GameObject characterObject = Instantiate(characterPrefab, characterContainer);
+            State state = characterObject.GetComponent<State>();
+            state.UpdatePosition(new Vector3(battle.position.x, battle.position.y, battle.position.z));
+            state.SetAnimationController(battle.character.state);
+            
         }
     }
 }
@@ -57,14 +57,32 @@ public class ConfigurationLoader : MonoBehaviour
 [System.Serializable]
 public class ConfigurationData
 {
-    public Team[] teams;
+    public Battle[] battles;
+    public Project[] projects;
 }
 
 [System.Serializable]
-public class Team
+public class Battle
 {
-    public string name;
+    public Enemy[] enemies;
+    public Character character;
+    public Position position;
+}
+
+[System.Serializable]
+public class Project
+{
     public Character[] characters;
+    public string type;
+    public Position position;
+}
+
+[System.Serializable]
+public class Enemy
+{
+    public string id;
+    public string name;
+    public string state;
 }
 
 [System.Serializable]
@@ -72,6 +90,13 @@ public class Character
 {
     public string name;
     public string id;
-    public Vector3 position;
     public string state;
+}
+
+[System.Serializable]
+public class Position
+{
+    public int x;
+    public int y;
+    public int z;
 }
