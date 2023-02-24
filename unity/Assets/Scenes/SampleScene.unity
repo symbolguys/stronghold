@@ -18902,7 +18902,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterPrefab: {fileID: 5352958571798197664, guid: e948ed14d488e2f4fab3163104da65f9, type: 3}
-  enemyPrefab: {fileID: 388476414, guid: 258b164f05b8bba4497f8ce532d0dd63, type: 3}
+  orcPrefab: {fileID: 388476414, guid: 258b164f05b8bba4497f8ce532d0dd63, type: 3}
+  beholderPrefab: {fileID: 9011648103021171507, guid: 5134b83d925637643a8e1182978ddb08, type: 3}
   characterContainer: {fileID: 1443229425}
   enemyContainer: {fileID: 1273526484}
   configEndpoint: localhost:3000/configuration

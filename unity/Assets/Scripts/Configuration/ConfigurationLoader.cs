@@ -160,7 +160,7 @@ public class Character
 [System.Serializable]
 public class Position
 {
-    public int x;
-    public int y;
-    public int z;
+    public float x;
+    public float y;
+    public float z;
 }
