@@ -10,9 +10,8 @@ import java.io.IOException;
 public class JiraIssuesApplication {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        JiraIssueService service = new JiraIssueService();
-        System.out.println(service.getIssue("TES-1"));
     }
+
 }
 
 
