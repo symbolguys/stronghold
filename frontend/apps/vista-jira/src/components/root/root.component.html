@@ -1,0 +1,52 @@
+<!--
+<div *ngFor="let feat of treeNodes">
+  <p>{{treeNodes[0].data.id}}</p>
+</div>
+<p-treeTable [value]="treeNodes">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Name</th>
+      <th>ID</th>
+      <th>Epic</th>
+      <th>Task Name</th>
+      <th>Task ID</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowNode>
+    <ng-container *ngIf="rowNode.data?.epic">
+      <tr>
+        <td>{{rowNode.data.name}}</td>
+        <td>{{rowNode.data.id}}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr *ngFor="let epic of rowNode.data.epic">
+        <td></td>
+        <td></td>
+        <td>{{epic.name}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr *ngFor="let epic of rowNode.data.epic">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td *ngFor="let task of epic.task">{{task.name}}</td>
+        <td *ngFor="let task of epic.task">{{task.id}}</td>
+      </tr>
+    </ng-container>
+    <ng-container *ngIf="!rowNode.data?.epic">
+      <tr>
+        <td>{{rowNode.data?.name}}</td>
+        <td>{{rowNode.data?.id}}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </ng-container>
+  </ng-template>
+</p-treeTable>
+-->
+
+<frontend-defect-list [defects]="this.defects"></frontend-defect-list>

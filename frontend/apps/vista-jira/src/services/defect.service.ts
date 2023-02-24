@@ -1,0 +1,28 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { DefectIssue } from '../models/defectIssue';
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DefectService {
+
+  //constructor(private http: HttpClient) { }
+
+  getDefect(id: string): Observable<DefectIssue> {
+  //  return this.http
+  //    .get<DefectIssue>(`https://your-jira-instance/rest/api/2/issue/${id}?expand=comments`)
+  //    .pipe(map((response) => new DefectIssue(response)));
+  return new Observable<any>();
+}
+
+addComment(id: string, comment: string): Observable<any> {
+  //const body = { body: comment };
+  //return this.http.post(`https://your-jira-instance/rest/api/2/issue/${id}/comment`, body);
+  return new Observable<any>();
+}
+
+}

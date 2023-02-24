@@ -1,0 +1,41 @@
+/* You can add global styles to this file, and also import other style files */
+/* Define variables for table colors */
+$defect-table-bg: #f5f5f5;
+$defect-table-header-bg: #e9ecef;
+$defect-table-header-color: #6c757d;
+$defect-table-hover-bg: #e2e6ea;
+
+/* Define styles for the table */
+:host ::ng-deep .p-table {
+  background-color: $defect-table-bg;
+  border-radius: 0.25rem;
+  border: none;
+  overflow: hidden;
+
+  & .p-table-thead {
+    background-color: $defect-table-header-bg;
+    color: $defect-table-header-color;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-top: none;
+  }
+
+  & .p-table-tbody tr {
+    background-color: white;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: $defect-table-hover-bg;
+      cursor: pointer;
+    }
+  }
+
+  & .p-table-tbody td {
+    border-color: white;
+  }
+
+  & .p-table-tbody td,
+  & .p-table-thead th {
+    padding: 0.5rem;
+  }
+}

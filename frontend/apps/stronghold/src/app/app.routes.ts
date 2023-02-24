@@ -3,6 +3,10 @@ import { Route } from '@angular/router';
 
 export const appRoutes: Route[] = [
   {
+    path: 'vista-jira',
+    loadChildren: () => import('vista-jira/Routes').then((m) => m.remoteRoutes),
+  },
+  {
     path: 'vista-admin',
     loadChildren: () =>
       import('vista-admin/Routes').then((m) => m.remoteRoutes),

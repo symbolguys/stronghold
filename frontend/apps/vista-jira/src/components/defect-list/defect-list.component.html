@@ -1,0 +1,73 @@
+<mat-table [dataSource]="defects" class="mat-elevation-z8">
+
+  <!-- Defect ID Column -->
+  <ng-container matColumnDef="key">
+    <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+    <mat-cell *matCellDef="let defect"> {{ defect.key }} </mat-cell>
+  </ng-container>
+
+  <!-- Summary Column -->
+  <ng-container matColumnDef="summary">
+    <mat-header-cell *matHeaderCellDef> Summary </mat-header-cell>
+    <mat-cell *matCellDef="let defect"> {{ defect.summary }} </mat-cell>
+  </ng-container>
+
+  <!-- Description Column -->
+  <ng-container matColumnDef="description">
+    <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+    <mat-cell *matCellDef="let defect"> {{ defect.description }} </mat-cell>
+  </ng-container>
+
+  <!-- Priority Column -->
+  <ng-container matColumnDef="priority">
+    <mat-header-cell *matHeaderCellDef> Priority </mat-header-cell>
+    <mat-cell *matCellDef="let defect"> {{ defect.priority }} </mat-cell>
+  </ng-container>
+
+  <!-- Severity Column -->
+  <ng-container matColumnDef="severity">
+    <mat-header-cell *matHeaderCellDef> Severity </mat-header-cell>
+    <mat-cell *matCellDef="let defect"> {{ defect.severity }} </mat-cell>
+  </ng-container>
+
+  <!-- Assignee Column -->
+  <ng-container matColumnDef="assignee">
+    <mat-header-cell *matHeaderCellDef> Assignee </mat-header-cell>
+    <mat-cell *matCellDef="let defect"> {{ defect.assignee }} </mat-cell>
+  </ng-container>
+
+  <!-- Reporter Column -->
+  <ng-container matColumnDef="reporter">
+    <mat-header-cell *matHeaderCellDef> Reporter </mat-header-cell>
+    <mat-cell *matCellDef="let defect"> {{ defect.reporter }} </mat-cell>
+  </ng-container>
+
+  <!-- Created Column -->
+  <ng-container matColumnDef="created">
+    <mat-header-cell *matHeaderCellDef> Created </mat-header-cell>
+    <mat-cell *matCellDef="let defect"> {{ defect.created | date:'medium' }} </mat-cell>
+  </ng-container>
+
+  <!-- Updated Column -->
+  <ng-container matColumnDef="updated">
+    <mat-header-cell *matHeaderCellDef> Updated </mat-header-cell>
+    <mat-cell *matCellDef="let defect"> {{ defect.updated | date:'medium' }} </mat-cell>
+  </ng-container>
+
+  <!-- Status Column -->
+  <ng-container matColumnDef="status">
+    <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+    <mat-cell *matCellDef="let defect"> {{ defect.status }} </mat-cell>
+  </ng-container>
+
+  <!-- Actions Column -->
+  <ng-container matColumnDef="actions">
+    <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+    <mat-cell *matCellDef="let defect">
+      <button mat-button color="primary">View</button>
+    </mat-cell>
+  </ng-container>
+  
+  <mat-header-row *matHeaderRowDef="defectColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: defectColumns;" (click)="onRowClicked(row)"></mat-row>
+</mat-table>
