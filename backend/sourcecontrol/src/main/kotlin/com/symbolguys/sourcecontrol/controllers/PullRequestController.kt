@@ -1,8 +1,7 @@
-import com.symbolguys.sourcecontrol.jpa.PullRequestRepository
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.format.datetime.DateTimeFormatAnnotationFormatterFactory
-import org.springframework.http.MediaType
-import org.springframework.stereotype.Controller
+package com.symbolguys.sourcecontrol.controllers
+
+import com.symbolguys.sourcecontrol.datamodel.PullRequest
+import com.symbolguys.sourcecontrol.repository.PullRequestRepository
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono;
@@ -15,31 +14,32 @@ class PullRequestController (val prRepo: PullRequestRepository) {
     @GetMapping("/test")
     fun getMockedPullRequest() : Flux<List<PullRequest>>{
         var prList=mutableListOf<PullRequest>()
-        prList.add(PullRequest(UUID.randomUUID(),"MERGED","Great Title", Date(101199), Date(15122018), Date(12101990) ))
+        prList.add(PullRequest(-1,"MERGED","Great Title", Date(101199), Date(15122018), Date(12101990) ))
         return Flux.just(prList)
     }
+
     @GetMapping
-    fun getAllPullRequests(): Flux<PullRequest> {
-        return prRepo.findAll();
+    fun getAllPullRequests(): Flux<Iterable<PullRequest>> {
+        return Flux.just(prRepo.findAll())
     }
 
     @PostMapping
     fun createPullRequest(@RequestBody pullRequest: PullRequest): Mono<PullRequest> {
-        return prRepo.save(pullRequest)
+        return Mono.just(prRepo.save(pullRequest))
     }
 
     @DeleteMapping("/{id}")
-    fun deletePullRequest(@PathVariable id: UUID): Mono<Void> {
-        return prRepo.deleteById(id);
+    fun deletePullRequest(@PathVariable id: Long): Mono<Unit> {
+        return Mono.just(prRepo.deleteById(id))
     }
 
     @PutMapping
     fun updatePullRequest(@RequestBody pullRequest: PullRequest): Mono<PullRequest>{
-        return prRepo.save(pullRequest);
+        return Mono.just(prRepo.save(pullRequest))
     }
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable id: UUID): Mono<PullRequest>{
-        return prRepo.findById(id);
+    fun findById(@PathVariable id: Long): Mono<PullRequest>{
+        return Mono.just(prRepo.findById(id).orElse(null))
     }
 }
