@@ -47,16 +47,15 @@ export class ActivePullRequestsComponent implements OnInit {
 
   ngOnInit() {
     this.getPullRequests();
-    this.pullRequests = this.pullRequests.filter(
-      (value) => value.state === 'OPEN'
-    );
   }
 
   getPullRequests() {
     this.httpClient
       .get(`${this.baseUrl}/pullRequests`, this.httpOptions)
       .subscribe((pullRequests) => {
-        this.pullRequests = pullRequests as PullRequest[];
+        this.pullRequests = (pullRequests as PullRequest[])
+          .concat(this.dummyData.get())
+          .filter((value) => value.state === 'OPEN');
         console.log(pullRequests);
       });
   }

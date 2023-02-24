@@ -33,10 +33,10 @@ export class PullRequestDialogComponent implements OnInit {
 
   getAliveTime(): string {
     if (this.data?.state === 'OPEN') {
-      return this.dhmFormat(Date.now() - this.data.createDate.getTime());
+      return this.dhmFormat(Date.now() - new Date(this.data.createDate).getTime());
     } else if (this.data) {
       return this.dhmFormat(
-        this.data.closedDate.getTime() - this.data.createDate.getTime()
+        new Date(this.data.closedDate).getTime() - new Date(this.data.createDate).getTime()
       );
     }
 
