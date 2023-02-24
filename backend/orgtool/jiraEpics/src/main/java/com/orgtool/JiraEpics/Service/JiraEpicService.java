@@ -1,6 +1,5 @@
 package com.orgtool.JiraEpics.Service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.orgtool.JiraEpics.models.Epic;
 import com.orgtool.JiraEpics.models.EpicsResponse;
