@@ -4,12 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Manor } from '../../models/manor';
 import { Household } from '../../models/household';
-import { Member } from '../../models/member';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
+import { Member } from '../../models/member';
 
 @Component({
   selector: 'frontend-vista-admin',
@@ -39,11 +39,12 @@ export class VistaAdminComponent {
   selectedHousehold: Household | undefined;
 
   manors: Manor[] = [];
-
   households: Household[] = [];
+  members: Member[] = [];
   apiManors: Manor[] = [];
 
   displayAddManor = false;
+  displayDeleteManor = false;
   displayAddHousehold = false;
   displayAddMember = false;
 
@@ -70,17 +71,25 @@ export class VistaAdminComponent {
     console.log(this.selectedManor?.name);
   };
 
+  public showDeleteManor(manor: any) {
+    this.selectedManor = manor;
+    this.httpClient.delete(this.manorsBaseUrl + '/manors/' + this.selectedManor!.id, this.httpOptions).subscribe(response => {
+      console.log(response)
+      this.getManors();
+    });
+  };
+
   public addManor() {
     if (this.manorname == undefined) {
       this.displayAddManor = false;
     } else {
-      const manor = new Manor(this.manorname!, []);
+      const manor = new Manor(this.manorname!, undefined as any, []);
       console.log('test');
       this.httpClient.post(this.manorsBaseUrl + '/manors', manor, this.httpOptions).subscribe(response => {
         console.log(response)
+        this.getManors();
       });
       this.displayAddManor = false;
-      this.getManors();
     };
   }
 
@@ -91,6 +100,9 @@ export class VistaAdminComponent {
   };
 
   public showAddMember(manor: any, household: any) {
+    console.log('add member')
+    console.log(manor)
+    console.log(household)
     this.selectedManor = manor;
     this.selectedHousehold = household;
     this.displayAddMember = true;
@@ -103,9 +115,11 @@ export class VistaAdminComponent {
     } else {
       this.selectedManor?.households.push({
         members: [],
+        id: undefined as any,
         name: this.householdname!,
       });
-      this.httpClient.post(this.manorsBaseUrl + '/manors', this.selectedManor, this.httpOptions).subscribe(response => {
+      this.httpClient.put(this.manorsBaseUrl + '/manors/' + this.selectedManor?.id, this.selectedManor, this.httpOptions).subscribe(response => {
+        this.getManors();
         console.log(response)
       });
       this.displayAddHousehold = false;
@@ -114,21 +128,19 @@ export class VistaAdminComponent {
 
   public addMember() {
     console.log('hello from addmember');
-    if (this.householdname == undefined) {
-      this.displayAddHousehold = false;
+    if (this.membername == undefined || this.memberinitials == undefined) {
+      this.displayAddMember = false;
     } else {
-      this.selectedManor?.households.push({
-        members: [],
-        name: this.householdname!,
+      this.selectedManor?.households.find(household => household.id == this.selectedHousehold?.id)?.members.push({
+        initials: this.memberinitials,
+        id: undefined as any,
+        name: this.membername,
       });
-      this.httpClient.post(this.manorsBaseUrl + '/manors', this.selectedManor, this.httpOptions).subscribe(response => {
+      this.httpClient.put(this.manorsBaseUrl + '/manors/' + this.selectedManor?.id, this.selectedManor, this.httpOptions).subscribe(response => {
+        this.getManors();
         console.log(response)
       });
-      this.displayAddHousehold = false;
+      this.displayAddMember = false;
     };
-  }
-
-  public deleteManor(manor: Manor) {
-    console.log(manor);
   }
 }
