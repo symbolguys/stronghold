@@ -1,4 +1,4 @@
 module.exports = {
   name: 'stronghold',
-  remotes: ['jazerant'],
+  remotes: ['continuous-integration', 'source-control', 'vista-admin'],
 };
