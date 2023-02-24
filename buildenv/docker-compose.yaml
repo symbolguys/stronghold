@@ -12,8 +12,6 @@ services:
       - stronghold
   
   postgres:
-    profiles:
-      - donotstart
     image: postgres:latest
     container_name: postgres
     restart: unless-stopped
@@ -43,11 +41,9 @@ services:
       - postgres
 
 # This is an example of springboot service: https://www.appsdeveloperblog.com/spring-boot-microservices-deployment-with-docker-compose/
-  springboot-example:
-    profiles:
-      - donotstart
-    container_name: springboot-example
-    image: myapplication
+  sourcecontrol:
+    container_name: sourcecontrol
+    image: sourcecontrol
     build: .
     ports:
       - 8080:8080
