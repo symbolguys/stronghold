@@ -1,0 +1,23 @@
+<div class="card">
+  <h5>Merged Pull Requests</h5>
+  <p-table
+  [value]="pullRequests"
+  selectionMode="single"
+  [tableStyle]="{ 'min-width': '50rem' }"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Title</th>    
+      <th>Destination</th>    
+      <th>Quality</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-pullRequest>
+    <tr (click)="showSelectedPullRequest(pullRequest)">
+      <td>{{ pullRequest.title }}</td>
+      <td>{{ pullRequest.destination }}</td>
+      <td>{{ pullRequest.quality }}</td>
+    </tr>
+  </ng-template>
+</p-table>
+</div>

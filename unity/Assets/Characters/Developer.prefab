@@ -1516,6 +1516,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4684403152539725594}
   - component: {fileID: 5082574569444486177}
+  - component: {fileID: -3887412189310744156}
   m_Layer: 0
   m_Name: Developer
   m_TagString: Untagged
@@ -1553,7 +1554,7 @@ Animator:
   m_GameObject: {fileID: 5352958571798197664}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 0308cf4e83cf517488b60af58b290fe0, type: 3}
-  m_Controller: {fileID: 9100000, guid: a529e0719179aa545a3ae7d5af54e8ab, type: 2}
+  m_Controller: {fileID: 9100000, guid: 20f80391f8e2dfd49afa22573b2efd46, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -1563,6 +1564,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &-3887412189310744156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5352958571798197664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c6cec3a5296e0f4eb1883d119df19c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nirmo: {fileID: 0}
 --- !u!1 &5691243874327788079
 GameObject:
   m_ObjectHideFlags: 0
