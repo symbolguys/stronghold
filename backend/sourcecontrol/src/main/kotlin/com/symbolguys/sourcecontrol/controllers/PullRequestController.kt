@@ -12,12 +12,7 @@ import java.util.*
 @RequestMapping("/pullRequests")
 class PullRequestController (val prRepo: PullRequestRepository, val prService: PullRequestService) {
 
-    @GetMapping("/test")
-    fun getMockedPullRequest() : Flux<List<PullRequest>>{
-        var prList=mutableListOf<PullRequest>()
-        prList.add(PullRequest(-1,"MERGED","Great Title", Date(101199), Date(15122018), Date(12101990), "Mark Twain" ))
-        return Flux.just(prList)
-    }
+
 
     @GetMapping("/{baseUrl}/{projectKey}/{repoSlug}/{bearerToken}")
     fun getAllPullRequests(@PathVariable baseUrl: String, @PathVariable projectKey: String, @PathVariable repoSlug: String, @PathVariable bearerToken: String): Flux<Iterable<PullRequest>> {

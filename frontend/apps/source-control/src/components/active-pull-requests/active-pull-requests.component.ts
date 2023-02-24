@@ -7,6 +7,11 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DialogService } from 'primeng/dynamicdialog';
 import { PullRequestDialogComponent } from '../pull-request-dialog/pull-request-dialog.component';
 import { PullRequestDummyData } from '../../dtos/pull-request.dummy';
+import {
+  HttpClient,
+  HttpClientModule,
+  HttpHeaders,
+} from '@angular/common/http';
 
 @Component({
   selector: 'frontend-active-pull-requests',
@@ -18,6 +23,7 @@ import { PullRequestDummyData } from '../../dtos/pull-request.dummy';
     DialogModule,
     DynamicDialogModule,
     PullRequestDialogComponent,
+    HttpClientModule,
   ],
   templateUrl: './active-pull-requests.component.html',
   styleUrls: ['./active-pull-requests.component.scss'],
@@ -25,14 +31,33 @@ import { PullRequestDummyData } from '../../dtos/pull-request.dummy';
 export class ActivePullRequestsComponent implements OnInit {
   pullRequests: PullRequest[] = [];
   display = false;
+  baseUrl = 'http://localhost:4202';
+
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    }),
+  };
 
   constructor(
     public dialogService: DialogService,
-    private dummyData: PullRequestDummyData
+    private dummyData: PullRequestDummyData,
+    private httpClient: HttpClient
   ) {}
 
   ngOnInit() {
-    this.pullRequests = this.dummyData.get().filter(value => value.state === "OPEN");
+    this.getPullRequests();
+  }
+
+  getPullRequests() {
+    this.httpClient
+      .get(`${this.baseUrl}/pullRequests`, this.httpOptions)
+      .subscribe((pullRequests) => {
+        this.pullRequests = (pullRequests as PullRequest[])
+          .concat(this.dummyData.get())
+          .filter((value) => value.state === 'OPEN');
+        console.log(pullRequests);
+      });
   }
 
   showSelectedPullRequest(rowData: PullRequest) {

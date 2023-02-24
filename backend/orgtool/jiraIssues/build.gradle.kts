@@ -13,6 +13,8 @@ repositories {
 }
 
 dependencies {
+	implementation("org.apache.httpcomponents:httpclient:4.5.13")
+	implementation("oauth.signpost:signpost-core:2.1.1")
 	implementation("org.springframework.boot:spring-boot-starter-amqp")
 	implementation("com.fasterxml.jackson.core:jackson-databind")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")

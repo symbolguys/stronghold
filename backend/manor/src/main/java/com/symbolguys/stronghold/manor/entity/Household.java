@@ -21,9 +21,14 @@ public class Household {
     private Manor manor;
 
     private String name;
+    private String section;
 
     @OneToMany(cascade=CascadeType.ALL)
     private List<Member> members;
+
+    public long getId() {
+        return id;
+    }
 
     public List<Member> getMembers() {
         return members;
@@ -41,6 +46,11 @@ public class Household {
         this.name = name;
     }
 
+    public String getSection() {
+        return section;
+    }
 
-
+    public void setSection(String section) {
+        this.section = section;
+    }
 }

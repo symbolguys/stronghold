@@ -27,20 +27,18 @@ services:
       - 5432:5432
 
 # This is an example of microservice using nginx Dockerfile
-  microfrontend-example:
-    profiles:
-      - donotstart
-    container_name: microfrontend-example
+  sc-client:
+    container_name: sourcecontrol-client
     build:
-      context: ../frotend/apps/stronghold
-      dockerfile: Dockerfile
+      context: ../frontend
+      dockerfile: apps/source-control/Dockerfile
     restart: unless-stopped
     ports:
-      - 80:80
+      - 8086:80
     networks:
       - stronghold
     depends_on:
-      - postgres
+      - sourcecontrol
 
 # This is an example of springboot service: https://www.appsdeveloperblog.com/spring-boot-microservices-deployment-with-docker-compose/
   sourcecontrol:
@@ -54,14 +52,6 @@ services:
     restart: unless-stopped
     depends_on:
       - postgres
-    environment:
-      - 'spring.r2dbc.url=r2dbc:postgresql://postgres:5432/mydatabase'
-      - 'spring.r2dbc.username=sa'
-      - 'spring.r2dbc.password=Password111'
-      - 'spring.r2dbc.pool.max-size=10'
-      - 'spring.jpa.hibernate.ddl-auto=create'
-      - 'spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true'
-      - 'spring.jpa.properties.hibernate.dialect= org.hibernate.dialect.PostgreSQLDialect'
 
   vista:
     image: mringive/symbolguys-stronghold-vista:latest
@@ -75,7 +65,20 @@ services:
       - stronghold
     depends_on:
       - portainer
-
+      - manor
+      
+  vista-admin:
+    container_name: vista-admin
+    build:
+      context: ../frontend
+      dockerfile: apps/vista-admin/Dockerfile
+    restart: unless-stopped
+    ports:
+      - 8091:80
+    networks:
+      - stronghold
+    depends_on:
+      - manor
   manor:
     image: mringive/symbolguys-stronghold-manor:latest
     container_name: manor
@@ -88,6 +91,28 @@ services:
       - stronghold
     depends_on:
       - portainer
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 22181:2181
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - 29092:29092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
 volumes:
   postgres-data:

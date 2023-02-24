@@ -32,6 +32,9 @@ public class RabbitMQConfig {
     @Value("${spring.rabbitmq.queue}")
     String queueName = "jira-queue";
 
+    @Value("${spring.rabbitmq.exchange.routingKey}")
+    String routingKey;
+
     @Bean
     public ConnectionFactory connectionFactory() {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory(rabbitMQHost, rabbitMQPort);
@@ -57,7 +60,6 @@ public class RabbitMQConfig {
 
     @Bean
     Binding binding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with("foo.bar.#");
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
     }
-
 }

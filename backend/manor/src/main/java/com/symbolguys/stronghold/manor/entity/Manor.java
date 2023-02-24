@@ -19,6 +19,10 @@ public class Manor {
     @OneToMany(cascade=CascadeType.ALL)
     private List<Household> households;
 
+    public long getId() {
+        return id;
+    }
+
     public List<Household> getHouseholds() {
         return households;
     }
