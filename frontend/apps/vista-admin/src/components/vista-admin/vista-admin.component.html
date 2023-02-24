@@ -1,0 +1,111 @@
+<p-table [value]="manors" dataKey="name" [tableStyle]="{'min-width': '60rem'}">
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width: 5rem"></th>
+            <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+            <th style="width: 5rem"></th>
+            <th style="width: 5rem"></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-manor let-expanded="expanded">
+        <tr>
+            <td>
+                <button type="button" pButton pRipple [pRowToggler]="manor" class="p-button-rounded p-button-plain default-button"></button>
+            </td>
+            <td>{{manor.name}}</td>
+            <td>
+                <button (click)="showAddManor(manor)" pButton type="button" label="Add" icon="pi pi-plus" class="p-button-rounded p-button-plain default-button"></button>
+            </td>
+            <td>
+                <button pButton type="button" label="Delete" icon="pi pi-trash" class="p-button-rounded p-button-plain default-button"></button>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="rowexpansion" let-manor>
+        <tr>
+            <td colspan="3">
+                <div class="p-3">
+                    <p-table [value]="manor.households" dataKey="id">
+                        <ng-template let-household pTemplate="header">
+                            <tr>
+                                <th style="width: 5rem"></th>
+                                <th pSortableColumn="id">Name <p-sortIcon field="name"></p-sortIcon></th>
+                                <th style="width: 5rem"></th>
+                                <th style="width: 5rem"></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-household let-expanded="expanded">
+                            <tr>
+                                <td>
+                                    <button type="button" pButton pRipple [pRowToggler]="households" class="p-button-text p-button-rounded p-button-plain default-button"></button>
+                                </td>
+                                <td>{{household.name}}</td>
+                                <td>
+                                    <button (click)="displayAddHousehold=true" pButton type="button" label="Add" icon="pi pi-plus" class="p-button-rounded p-button-plain default-button"></button>
+                                </td>
+                                <td>
+                                    <button (click)="displayAddHousehold=true" pButton type="button" label="Add" icon="pi pi-plus" class="p-button-rounded p-button-plain default-button"></button>
+                                </td>
+                                <td>
+                                    <button pButton type="button" label="Delete" icon="pi pi-trash" class="p-button-rounded p-button-plain default-button"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="rowexpansion" let-household>
+                            <tr>
+                                <td colspan="3">
+                                    <div class="p-3">
+                                        <p-table [value]="household.members" dataKey="id">
+                                            <ng-template pTemplate="header">
+                                                <tr>
+                                                    <th style="width: 5rem"></th>
+                                                    <th pSortableColumn="id">Name <p-sortIcon field="name"></p-sortIcon></th>
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="body" let-member let-expanded="expanded">
+                                                <tr>
+                                                    <td>{{member.name}}</td>
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="emptymessage">
+                                                <tr>
+                                                    <td colspan="1">There nothing here.</td>
+                                                </tr>
+                                            </ng-template>
+                                        </p-table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <button (click)="showAddManor(undefined)" pButton type="button" label="Add" icon="pi pi-plus" class="p-button-rounded p-button-plain default-button"></button>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <button (click)="showAddManor(undefined)" pButton type="button" label="Add" icon="pi pi-plus" class="p-button-rounded p-button-plain default-button"></button>
+        </tr>
+    </ng-template>
+</p-table>
+
+<p-dialog header="Name" [(visible)]="displayAddManor" [style]="{width: '50vw'}">
+    <input type="text" pInputText [(ngModel)]="manorname"> 
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="addManor()" label="Save" styleClass="p-button-text"></p-button>
+        <p-button icon="pi pi-check" (click)="displayAddManor=false" label="Cancel" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog header="Name" [(visible)]="displayAddHousehold" [style]="{width: '50vw'}">
+    <input type="text" pInputText [(ngModel)]="householdname"> 
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="addHousehold()" label="Save" styleClass="p-button-text"></p-button>
+        <p-button icon="pi pi-check" (click)="displayAddHousehold=false" label="Cancel" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>
