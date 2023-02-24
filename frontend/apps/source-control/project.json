@@ -19,7 +19,12 @@
           "apps/source-control/src/favicon.ico",
           "apps/source-control/src/assets"
         ],
-        "styles": ["apps/source-control/src/styles.scss"],
+        "styles": [
+          "node_modules/primeicons/primeicons.css",
+          "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+          "node_modules/primeng/resources/primeng.min.css",
+          "apps/source-control/src/styles.scss"
+        ],
         "scripts": [],
         "customWebpackConfig": {
           "path": "apps/source-control/webpack.config.js"

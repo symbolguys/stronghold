@@ -1,0 +1,25 @@
+<p-dialog header="Title" [(visible)]="display">
+    Content
+</p-dialog>
+<p-table
+  [value]="pullRequests"
+  selectionMode="single"
+  [tableStyle]="{ 'min-width': '50rem' }"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Title</th>
+      <th>Quality</th>
+      <th>Update Date</th>
+      <th>Status</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-pullRequest>
+    <tr (click)="showSelectedPullRequest(pullRequest)">
+      <td>{{ pullRequest.title }}</td>
+      <td>{{ pullRequest.quality }}</td>
+      <td>{{ pullRequest.updateDate }}</td>
+      <td>{{ pullRequest.status }}</td>
+    </tr>
+  </ng-template>
+</p-table>
