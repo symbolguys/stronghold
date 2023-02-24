@@ -25,4 +25,9 @@ public class State : MonoBehaviour
     {
         GetComponent<Animator>().Play(state);
     }
+
+    public void UpdateDirection(float degrees)
+    {
+        transform.Rotate(Vector3.up * degrees);
+    }
 }
