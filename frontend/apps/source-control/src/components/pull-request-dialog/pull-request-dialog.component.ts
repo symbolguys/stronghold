@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { PullRequest } from '../../dtos/pull-request.data';
 
 @Component({
   selector: 'frontend-pull-request-dialog',
@@ -8,4 +11,15 @@ import { CommonModule } from '@angular/common';
   templateUrl: './pull-request-dialog.component.html',
   styleUrls: ['./pull-request-dialog.component.scss'],
 })
-export class PullRequestDialogComponent {}
+export class PullRequestDialogComponent implements OnInit {
+  data: PullRequest | undefined;
+
+  constructor(
+    public ref: DynamicDialogRef,
+    public config: DynamicDialogConfig
+  ) {}
+
+  ngOnInit() {
+    this.data = this.config.data;
+  }
+}
