@@ -1,4 +1,4 @@
-package com.symbolguys.stronghold.vista;
+package com.symbolguys.stronghold.vista.model;
 
 import java.util.List;
 
@@ -9,5 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Household {
     private String name;
+    private String section;
     private List<Member> members;
 }
