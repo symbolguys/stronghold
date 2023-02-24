@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class Position {
-    private int x;
-    private int y;
-    private int z;
+    private Float x;
+    private Float y;
+    private Float z;
 }
