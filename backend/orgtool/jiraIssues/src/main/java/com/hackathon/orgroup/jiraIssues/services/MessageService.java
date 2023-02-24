@@ -2,6 +2,8 @@ package com.hackathon.orgroup.jiraIssues.services;
 
 import com.hackathon.orgroup.jiraIssues.models.QueueMessage;
 import com.rabbitmq.client.Channel;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.connection.Connection;
@@ -30,7 +32,7 @@ public class MessageService {
     public void startListening() {
         new Thread(() -> {
             while (true) {
-                String message = (String) rabbitTemplate.receiveAndConvert(messageQueue.getName());
+                Message message = rabbitTemplate.receive(messageQueue.getName());
                 if (message != null) {
                     try (Connection connection = rabbitTemplate.getConnectionFactory().createConnection();
                          Channel channel = connection.createChannel(false)) {
@@ -44,17 +46,21 @@ public class MessageService {
     }
 
     @RabbitListener(queues = "${spring.rabbitmq.queue}")
-    public void handleMessage(String issueIdOrKey, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long tag) throws IOException {
+    public void handleMessage(Message message, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long tag) throws IOException {
+        String issueIdOrKey = new String(message.getBody());
         QueueMessage response = new QueueMessage();
         channel.basicAck(tag, false);
         try {
-            response.setMessage(jiraIssueService.getIssue(issueIdOrKey));
+            String issue = jiraIssueService.getIssue(issueIdOrKey);
+            response.setMessage(issue);
             response.setStatus("Successful");
         } catch (Exception e) {
             response.setStatus("Failed");
         } finally {
-            rabbitTemplate.convertAndSend(messageQueue.getName(), response);
+            MessageProperties messageProperties = new MessageProperties();
+            messageProperties.setCorrelationId(message.getMessageProperties().getCorrelationId());
+            Message responseMessage = new Message(response.toString().getBytes(), messageProperties);
+            rabbitTemplate.send(message.getMessageProperties().getReplyTo(), responseMessage);
         }
-        rabbitTemplate.convertAndSend(messageQueue.getName(), response);
     }
 }

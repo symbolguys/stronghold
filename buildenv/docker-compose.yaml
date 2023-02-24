@@ -27,20 +27,18 @@ services:
       - 5432:5432
 
 # This is an example of microservice using nginx Dockerfile
-  microfrontend-example:
-    profiles:
-      - donotstart
-    container_name: microfrontend-example
+  sc-client:
+    container_name: sourcecontrol-client
     build:
-      context: ../frotend/apps/stronghold
-      dockerfile: Dockerfile
+      context: ../frontend
+      dockerfile: apps/source-control/Dockerfile
     restart: unless-stopped
     ports:
-      - 80:80
+      - 8086:80
     networks:
       - stronghold
     depends_on:
-      - postgres
+      - sourcecontrol
 
 # This is an example of springboot service: https://www.appsdeveloperblog.com/spring-boot-microservices-deployment-with-docker-compose/
   sourcecontrol:

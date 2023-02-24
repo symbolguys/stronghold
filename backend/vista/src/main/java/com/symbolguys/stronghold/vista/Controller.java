@@ -13,6 +13,7 @@ import com.symbolguys.stronghold.vista.model.Battle;
 import com.symbolguys.stronghold.vista.model.Character;
 import com.symbolguys.stronghold.vista.model.Configuration;
 import com.symbolguys.stronghold.vista.model.Enemy;
+import com.symbolguys.stronghold.vista.model.EnemyType;
 import com.symbolguys.stronghold.vista.model.Member;
 import com.symbolguys.stronghold.vista.model.Position;
 import com.symbolguys.stronghold.vista.model.Project;
@@ -61,15 +62,16 @@ public class Controller {
         Enemy enemy = Enemy.builder()
                 .id("456")
                 .name("Mr. Defect")
-                .state("WINNING")
+                .state(State.WINNING)
+                .type(EnemyType.ORC)
                 .build();
 
         Enemy enemy2 = Enemy.builder()
             .id("123")
             .name("Another Mr. Defect")
-            .state("FIGHTING")
+            .state(State.FIGHTING)
+            .type(EnemyType.BEHOLDER)
             .build();
-
 
         Battle battle = Battle.builder()
                 .enemies(List.of(enemy))
@@ -82,7 +84,7 @@ public class Controller {
                 .build();
 
         Battle battle2 = Battle.builder()
-            .enemies(List.of(enemy2, enemy2))
+            .enemies(List.of(enemy2, enemy2, enemy2))
             .character(manie)
             .position(Position.builder()
                 .x(7)
@@ -118,7 +120,7 @@ public class Controller {
         Enemy enemy = Enemy.builder()
                 .id("123")
                 .name("Mr. Defect")
-                .state("FIGHTING")
+                .state(State.FIGHTING)
                 .build();
 
         return Battle.builder()

@@ -1,10 +1,11 @@
 package com.hackathon.orgroup.jiraIssues.models;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class JiraIssue {
     private String id;
     private String key;
@@ -22,6 +23,7 @@ public class JiraIssue {
     public JiraIssue() {
 
     }
+    
     public JiraIssue(String expand, String id, String key, Map<String, Object> fields) {
         this.id = id;
         this.key = key;

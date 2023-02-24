@@ -4,5 +4,6 @@ public enum State {
     FIGHTING,
     IDLE,
     JUMP,
-    DEFEND;
+    DEFEND,
+    WINNING;
 }

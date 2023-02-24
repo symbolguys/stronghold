@@ -31,7 +31,7 @@ import {
 export class ActivePullRequestsComponent implements OnInit {
   pullRequests: PullRequest[] = [];
   display = false;
-  baseUrl = 'http://sourcecontrol:8580';
+  baseUrl = 'http://localhost:4202';
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -47,16 +47,15 @@ export class ActivePullRequestsComponent implements OnInit {
 
   ngOnInit() {
     this.getPullRequests();
-    this.pullRequests = this.pullRequests.filter(
-      (value) => value.state === 'OPEN'
-    );
   }
 
   getPullRequests() {
     this.httpClient
       .get(`${this.baseUrl}/pullRequests`, this.httpOptions)
       .subscribe((pullRequests) => {
-        this.pullRequests = pullRequests as PullRequest[];
+        this.pullRequests = (pullRequests as PullRequest[])
+          .concat(this.dummyData.get())
+          .filter((value) => value.state === 'OPEN');
         console.log(pullRequests);
       });
   }

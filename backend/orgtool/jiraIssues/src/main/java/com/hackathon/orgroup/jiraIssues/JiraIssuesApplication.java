@@ -14,6 +14,7 @@ public class JiraIssuesApplication {
     public static void main(String[] args) {
         SpringApplication.run(JiraIssuesApplication.class, args);
     }
+
 }
 
 
