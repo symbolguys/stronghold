@@ -8,5 +8,6 @@ import lombok.Data;
 public class Enemy {
     private String id;
     private String name;
-    private String state;
+    private State state;
+    private EnemyType type;
 }
