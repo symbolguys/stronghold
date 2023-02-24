@@ -1,4 +1,4 @@
-package com.symbolguys.stronghold.vista;
+package com.symbolguys.stronghold.vista.model;
 
 import java.util.List;
 
